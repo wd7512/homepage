@@ -1,0 +1,22 @@
+# Build outputs (regenerated, never committed) — except the release CV
+dist/
+*.pdf
+!/cv.pdf
+!docs/**/*.pdf
+
+# LaTeX intermediates
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

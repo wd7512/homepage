@@ -1,0 +1,38 @@
+# Public contacts allowlist — homepage
+
+# This file is the SINGLE source of truth for which contact details are
+# allowed to appear in the working tree AND in git history at public-release
+# time. Anything that looks like an email / phone / profile URL and is NOT
+# listed here (or matching allow_patterns) makes scripts/check_contacts.py
+# exit non-zero.
+#
+# Intentionally NOT listed (and therefore flagged as leaks):
+#   - old home email (present in private history b2d6906, HEAD already fixed)
+#   - university author email on all 3 private commits (see PLAN §Release)
+#   - phone numbers (decision: phone is never public; must be removed from
+#     content before any public release)
+# Scrub of history is deferred; this file defines what "clean" means.
+
+emails:
+  # Canonical public contact (currently in example_cv.tex HEAD).
+  - wwdennis.research@gmail.com
+
+phones: []
+
+urls:
+  - https://github.com/wd7512
+  # TODO(before-public): LinkedIn slug conflict — home/content uses one slug,
+  # example_cv.tex uses uk.linkedin.com/in/williamwudennis. Canonical below is
+  # the CV variant; resolve to exactly one before public squash.
+  - https://uk.linkedin.com/in/williamwudennis
+  # Canonical site URL once Pages deploys from this repo.
+  - https://wd7512.github.io/homepage/
+
+# Regexes (matched against the full candidate value, case-insensitive).
+allow_patterns:
+  # GitHub web-flow / noreply commit addresses are not personal leaks.
+  - .*@users\.noreply\.github\.com
+  # Any repo/project under the owner's GitHub namespace is public-safe.
+  - https://github\.com/wd7512/.*
+  # Any page under the owner's GitHub Pages namespace is public-safe.
+  - https://wd7512\.github\.io/.*

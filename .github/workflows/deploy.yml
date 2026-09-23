@@ -1,0 +1,64 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Single Pages deployment at a time; no cancel (deploy step is quick).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Install TeX Live
+        run: >
+          sudo apt-get update -qq &&
+          sudo apt-get install -y -qq
+          texlive-latex-base texlive-latex-recommended
+          texlive-latex-extra texlive-fonts-recommended latexmk
+
+      - name: Build site and CV
+        run: |
+          uv run python scripts/build_site.py --content content --out dist/index.html
+          uv run python scripts/build_cv.py --content content --out dist/cv.tex --pdf
+
+      - name: Leak-scan outputs
+        run: >
+          ! strings dist/cv.pdf |
+          grep -i -e "ky23812" -e "home@gmail" -e "+44" -e "(0)" -e "/Users/" &&
+          ! grep -r -i -e "ky23812" -e "home@gmail" -e "+44 (0)" dist/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

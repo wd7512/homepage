@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Lint
+        run: uv run ruff check src tests scripts
+
+      - name: Format check
+        run: uv run ruff format --check src tests scripts
+
+      - name: Tests
+        run: uv run pytest -q
+
+      - name: Content validation
+        run: uv run python scripts/validate.py --content content
+
+      - name: Contacts allowlist gate (working tree)
+        # History gate is intentionally NOT run here: private history still
+        # carries pre-scrub identities by design (see docs/PLAN.md §7).
+        # It runs once, locally, as part of the public-squash checklist.
+        run: python3 scripts/check_contacts.py --mode tree
+
+  pdf:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+          python-version: "3.12"
+
+      - name: Install TeX Live
+        run: >
+          sudo apt-get update -qq &&
+          sudo apt-get install -y -qq
+          texlive-latex-base texlive-latex-recommended
+          texlive-latex-extra texlive-fonts-recommended latexmk
+
+      - name: Build CV
+        run: uv run python scripts/build_cv.py --content content --out dist/cv.tex --pdf
+
+      # Shape-based (never embed the real number as a search literal):
+      # uni ID fragment, old-mailbox fragment, UK-phone shapes, local paths.
+      - name: Leak-scan PDF
+        run: >
+          ! strings dist/cv.pdf |
+          grep -i -e "ky23812" -e "home@gmail" -e "+44" -e "(0)" -e "/Users/"
+
+      - name: Upload CV artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cv
+          path: |
+            dist/cv.tex
+            dist/cv.pdf
+          retention-days: 30
