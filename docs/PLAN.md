@@ -160,8 +160,8 @@ empty bullet lists fail; `research/` files must have `kind: research`
    `git log --all -S <old-home-email>` / `-S <uni-id>` empty;
    `git grep -I -n` for email/phone patterns matches allowlist only.
 4. Flip GitHub repo to Public. Then, separately: make `home` private →
-   Archive, update links/redirects (`wd7512.github.io/home/` is printed on
-   distributed CVs — plan a redirect note).
+   Archive, delete `gh-pages` branch + disable Pages (hard shutdown, no
+   redirect — decided Oct 2026; `wd7512.github.io/home/` now 404s).
 
 ## 8. Done criteria for the schema-first milestone
 
@@ -179,4 +179,5 @@ empty bullet lists fail; `research/` files must have `kind: research`
 * Single-commit author: research email vs `users.noreply`?
 * LinkedIn canonical slug (allowlist currently holds CV variant).
 * Public squash includes `docs/` or code-only?
-* `wd7512.github.io/home/` redirect / custom domain?
+* `wd7512.github.io/home/` redirect / custom domain? — Decided Oct 2026:
+  hard shutdown (branch deleted, Pages disabled, URL 404s), no redirect stub.

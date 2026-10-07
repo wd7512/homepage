@@ -25,7 +25,7 @@ def personal() -> Personal:
         email="wwdennis.research@gmail.com",
         linkedin="https://uk.linkedin.com/in/williamwudennis",
         github="https://github.com/wd7512",
-        website="https://wd7512.github.io/home/",
+        website="https://wd7512.github.io/homepage/",
     )
 
 
