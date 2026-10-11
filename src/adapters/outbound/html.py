@@ -145,7 +145,13 @@ _CSS = """
     .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
     .project-card { display: flex; flex-direction: column; }
     .project-card p { flex-grow: 1; }
-    .project-card > .link-btn { align-self: flex-start; }
+    .project-card > .link-btn {
+      align-self: flex-start;
+      margin-top: 12px;
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      line-height: 1.4;
+    }
 
     .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
     .tag {
