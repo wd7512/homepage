@@ -70,7 +70,7 @@ def render_cv(bundle: DomainBundle) -> str:
     ]
     if personal.website:
         header_links.append(f"\\href{{{personal.website}}}{{Website}}")
-    header = r" \textbar ".join(header_links)
+    header = r" \textbar{} ".join(header_links)
 
     sections: list[str] = []
     if cv.experience:
@@ -98,7 +98,7 @@ def render_cv(bundle: DomainBundle) -> str:
     if cv.research:
         blocks = []
         for r in cv.research:
-            links = r" \textbar ".join(
+            links = r" \textbar{} ".join(
                 f"\\href{{{link.url}}}{{{escape_latex(link.label)}}}" for link in r.links
             )
             body = escape_latex(r.body)

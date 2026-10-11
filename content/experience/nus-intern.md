@@ -1,7 +1,7 @@
 ---
 role: Research Intern
 company: University of Bristol x National University of Singapore
-location: Bristol / Singapore
+location: Bristol
 period: Jun 2026 – Jul 2026
 order: 1
 ---
