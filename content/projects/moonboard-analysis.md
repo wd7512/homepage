@@ -1,9 +1,11 @@
 ---
 title: Moonboard-Analysis
-tags: [PyTorch, ML, Research, Benchmarking]
+tags: [PyTorch, ML, Benchmarking, Climbing]
 year: 2025-2026
 order: 2
-kind: research
+cv_order: 1
+kind: personal
+visibility: [website, cv]
 links:
   - label: GitHub
     url: https://github.com/wd7512/Moonboard-Analysis

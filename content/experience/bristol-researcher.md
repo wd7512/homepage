@@ -1,9 +1,9 @@
 ---
-role: Part-time Researcher
+role: Honorary Research Associate in Machine Learning
 company: University of Bristol
 location: Bristol, UK
 period: Oct 2024 – Present
-order: 2
+order: 1
 ---
 
 - Released and active owner of an open-source fault-injection framework used within the department for the wider research community.

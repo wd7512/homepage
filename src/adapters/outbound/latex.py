@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import re
 
-from domain.models import DomainBundle
+from domain.models import DomainBundle, Publication
 
 _REPLACEMENTS = {
     "\\": r"\textbackslash{}",
@@ -47,6 +47,29 @@ def md_bullets_to_latex(bullets: list[str]) -> str:
     return f"\\begin{{itemize}}\n{items}\n\\end{{itemize}}"
 
 
+def _authors(authors: str, highlight: str | None) -> str:
+    """Escape an author list and emphasise the profile owner's name."""
+    rendered = escape_latex(authors)
+    if highlight:
+        target = escape_latex(highlight)
+        if target in rendered:
+            rendered = rendered.replace(target, f"\\textbf{{{target}}}", 1)
+    return rendered
+
+
+def _publication_item(publication: Publication) -> str:
+    """Render one CV publication; avoid doubling a terminal author period."""
+    authors = _authors(publication.authors, publication.highlight_author)
+    separator = "" if authors.endswith(".") else "."
+    link = f"~\\url{{{publication.link}}}" if publication.link else ""
+    return (
+        f"  \\item {authors}{separator} "
+        f"\\textit{{{escape_latex(publication.title)}.}} "
+        f"{escape_latex(publication.venue)}, {escape_latex(publication.date)}. "
+        f"{escape_latex(publication.status)}.{link}"
+    )
+
+
 def _entry(head: str, right: str, sub: str, body_tex: str) -> str:
     parts = [f"\\entry{{{head}}}{{{right}}}"]
     if sub:
@@ -68,6 +91,10 @@ def render_cv(bundle: DomainBundle) -> str:
         f"\\href{{{personal.linkedin}}}{{LinkedIn}}",
         f"\\href{{{personal.github}}}{{GitHub}}",
     ]
+    if personal.orcid:
+        header_links.append(f"\\href{{{personal.orcid}}}{{ORCID}}")
+    if personal.scholar:
+        header_links.append(f"\\href{{{personal.scholar}}}{{Scholar}}")
     if personal.website:
         header_links.append(f"\\href{{{personal.website}}}{{Website}}")
     header = r" \textbar{} ".join(header_links)
@@ -107,13 +134,7 @@ def render_cv(bundle: DomainBundle) -> str:
             blocks.append(_entry(escape_latex(r.title), escape_latex(r.year), "", body))
         sections.append("\\section*{Research}\n\n" + "\n\n".join(blocks))
     if cv.publications:
-        items = "\n".join(
-            f"  \\item {escape_latex(p.authors)}. "
-            f"\\textit{{{escape_latex(p.title)}.}} "
-            f"{escape_latex(p.venue)}, {escape_latex(p.date)}. "
-            f"{escape_latex(p.status)}." + (f"~\\url{{{p.link}}}" if p.link else "")
-            for p in cv.publications
-        )
+        items = "\n".join(_publication_item(p) for p in cv.publications)
         sections.append(
             f"\\section*{{Publications}}\n\n\\begin{{enumerate}}\n{items}\n\\end{{enumerate}}"
         )
@@ -126,6 +147,18 @@ def render_cv(bundle: DomainBundle) -> str:
         sections.append(
             f"\\section*{{Technical Skills}}\n\n\\begin{{itemize}}\n{items}\n\\end{{itemize}}"
         )
+    if cv.projects:
+        blocks = []
+        for project in cv.projects:
+            links = r" \textbar{} ".join(
+                f"\\href{{{link.url}}}{{{escape_latex(link.label)}}}" for link in project.links
+            )
+            body = escape_latex(project.body)
+            if links:
+                body += f"\n\n{links}"
+            blocks.append(_entry(escape_latex(project.title), escape_latex(project.year), "", body))
+        sections.append("\\section*{Selected Technical Projects}\n\n" + "\n\n".join(blocks))
+
     if cv.activities:
         items = "\n".join(
             f"  \\item {escape_latex(a.title)}"
@@ -138,6 +171,11 @@ def render_cv(bundle: DomainBundle) -> str:
         )
 
     body = "\n\n".join(sections)
+    interests = (
+        f"\\textit{{{escape_latex(personal.research_interests)}}}\n"
+        if personal.research_interests
+        else ""
+    )
     # PDF metadata carries only the public name/title (no paths, no emails).
     meta = (
         f"\\hypersetup{{colorlinks=true, linkcolor=linkblue, urlcolor=linkblue,\n"
@@ -182,6 +220,8 @@ def render_cv(bundle: DomainBundle) -> str:
 {escape_latex(personal.title)}\\\\[2pt]
 {header}
 \\end{{center}}
+
+{interests}
 
 \\vspace{{1pt}}
 

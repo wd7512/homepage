@@ -114,3 +114,19 @@ def test_unquoted_yaml_year_loads_as_string(content: Path) -> None:
     bundle = load(content)
     years = {r.title: r.year for r in bundle.research}
     assert years["T"] == "2025"
+
+
+def test_personal_project_links_and_cv_order(content: Path) -> None:
+    (content / "projects").mkdir()
+    write(
+        content / "projects" / "moonboard.md",
+        "---\ntitle: Moonboard\ntags: [ML]\nyear: '2026'\nkind: personal\n"
+        "order: 2\ncv_order: 1\nvisibility: [website, cv]\n"
+        "links:\n  - label: GitHub\n    url: https://github.com/wd7512/moonboard\n"
+        "  - label: Results\n    url: https://wd7512.github.io/moonboard/\n"
+        "---\n\nBenchmark.\n",
+    )
+    bundle = load(content)
+    assert len(bundle.projects) == 1
+    assert bundle.projects[0].links[0].label == "GitHub"
+    assert bundle.projects[0].cv_order == 1

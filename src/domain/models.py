@@ -51,6 +51,13 @@ class Personal(VisibilityMixin):
     # Relative path (repo-root) of the built CV PDF, e.g. "cv.pdf".
     # Rendered by the future website adapter as a download link.
     cv_pdf: NonEmpty | None = None
+    # Optional researcher-profile links rendered in the site/CV header.
+    orcid: HttpUrl | None = None
+    scholar: HttpUrl | None = None
+    # Public-facing research narrative. `research_statement` is rendered on
+    # the website; `research_interests` is a compact CV line.
+    research_statement: NonEmpty | None = None
+    research_interests: NonEmpty | None = None
 
 
 class Experience(OrderedMixin):
@@ -83,15 +90,19 @@ class ResearchProject(OrderedMixin):
     links: list[LinkItem] = []
     body: NonEmpty
     kind: Literal["research"] = "research"
+    # Optional curated ordering for the CV. Falls back to `order`.
+    cv_order: Annotated[int, Field(ge=1)] | None = None
 
 
 class PersonalProject(OrderedMixin):
     title: NonEmpty
     tags: list[NonEmpty] = []
     year: NonEmpty
-    link: HttpUrl | None = None
+    links: list[LinkItem] = []
     body: NonEmpty
     kind: Literal["personal"] = "personal"
+    # Optional curated ordering for the CV. Falls back to `order`.
+    cv_order: Annotated[int, Field(ge=1)] | None = None
 
 
 class Publication(OrderedMixin):
@@ -101,6 +112,8 @@ class Publication(OrderedMixin):
     date: NonEmpty
     status: Literal["Published", "Pending", "Submitted"]
     link: HttpUrl | None = None
+    # Name to emphasise in the author list (usually the profile owner).
+    highlight_author: NonEmpty | None = None
 
 
 class SkillCategory(OrderedMixin):
@@ -130,14 +143,30 @@ class DomainBundle(StrictBase):
     activities: list[Activity] = []
 
     def visible(self, channel: Visibility) -> DomainBundle:
-        """Return a copy containing only entries visible on `channel`."""
+        """Return a sorted copy containing only entries visible on `channel`.
+
+        Website entries use `order`; CV entries use `cv_order` when present,
+        falling back to `order`. This lets the public portfolio and the
+        curated CV present the same files in different sequences.
+        """
+
+        def key(item: object) -> int:
+            if channel == "cv":
+                cv_order = getattr(item, "cv_order", None)
+                if cv_order is not None:
+                    return cv_order
+            return item.order  # type: ignore[attr-defined]
+
+        def select(items: list) -> list:
+            return sorted((i for i in items if channel in i.visibility), key=key)
+
         return DomainBundle(
             personal=self.personal,
-            experience=[e for e in self.experience if channel in e.visibility],
-            education=[e for e in self.education if channel in e.visibility],
-            research=[r for r in self.research if channel in r.visibility],
-            projects=[p for p in self.projects if channel in p.visibility],
-            publications=[p for p in self.publications if channel in p.visibility],
-            skills=[s for s in self.skills if channel in s.visibility],
-            activities=[a for a in self.activities if channel in a.visibility],
+            experience=select(self.experience),
+            education=select(self.education),
+            research=select(self.research),
+            projects=select(self.projects),
+            publications=select(self.publications),
+            skills=select(self.skills),
+            activities=select(self.activities),
         )

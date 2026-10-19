@@ -9,6 +9,7 @@ from domain.models import (
     Experience,
     Personal,
     PersonalProject,
+    Publication,
     SkillCategory,
 )
 
@@ -17,16 +18,18 @@ from domain.models import (
 PHONE_SHAPE_RE = re.compile(r"\+44|\(0\)\s?\d|07\d{3}\s?\d{3}")
 
 
-def personal() -> Personal:
-    return Personal(
-        name="William Dennis",
-        title="Machine Learning Researcher",
-        tagline="Robust ML.",
-        email="wwdennis.research@gmail.com",
-        linkedin="https://uk.linkedin.com/in/williamwudennis",
-        github="https://github.com/wd7512",
-        website="https://wd7512.github.io/homepage/",
-    )
+def personal(**over) -> Personal:
+    base = {
+        "name": "William Dennis",
+        "title": "Machine Learning Researcher",
+        "tagline": "Robust ML.",
+        "email": "wwdennis.research@gmail.com",
+        "linkedin": "https://uk.linkedin.com/in/williamwudennis",
+        "github": "https://github.com/wd7512",
+        "website": "https://wd7512.github.io/homepage/",
+    }
+    base.update(over)
+    return Personal(**base)
 
 
 def test_escape_latex_specials() -> None:
@@ -81,3 +84,41 @@ def test_render_cv_filters_channels_and_has_no_phone() -> None:
     assert "C\\#" in tex
     assert PHONE_SHAPE_RE.search(tex) is None
     assert "phone" not in tex.lower()
+
+
+def test_render_cv_interests_selected_projects_and_highlighted_author() -> None:
+    bundle = DomainBundle(
+        personal=personal(
+            research_interests="Research interests: robust ML; evaluation.",
+            orcid="https://orcid.org/0009-0005-4769-3136",
+            scholar="https://scholar.google.com/citations?hl=en&user=MKqzBNYAAAAJ",
+        ),
+        projects=[
+            PersonalProject(
+                title="Moonboard",
+                year="2025-2026",
+                body="Benchmark.",
+                order=1,
+                cv_order=1,
+                visibility=["website", "cv"],
+                links=[{"label": "GitHub", "url": "https://github.com/wd7512/y"}],
+            )
+        ],
+        publications=[
+            Publication(
+                title="Paper",
+                authors="A, William Dennis, B",
+                venue="V",
+                date="2025",
+                status="Published",
+                order=1,
+                highlight_author="William Dennis",
+            )
+        ],
+    )
+    tex = render_cv(bundle)
+    assert r"\textit{Research interests: robust ML; evaluation.}" in tex
+    assert "Selected Technical Projects" in tex
+    assert "Moonboard" in tex
+    assert r"\textbf{William Dennis}" in tex
+    assert "ORCID" in tex and "Scholar" in tex

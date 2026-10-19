@@ -29,6 +29,16 @@ def _tags(tags: list[str]) -> str:
     return f'<div class="tags">{spans}</div>'
 
 
+def _authors(authors: str, highlight: str | None) -> str:
+    """Escape an author list and emphasise the profile owner's name."""
+    rendered = esc(authors)
+    if highlight:
+        target = esc(highlight)
+        if target in rendered:
+            rendered = rendered.replace(target, f"<strong>{target}</strong>", 1)
+    return rendered
+
+
 _CSS = """
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -67,6 +77,10 @@ _CSS = """
       font-size: 1.75rem; font-weight: 700; margin-bottom: 48px;
       padding-bottom: 16px; border-bottom: 2px solid var(--accent-dim);
       display: inline-block;
+    }
+    .research-statement {
+      max-width: 820px; color: var(--text-muted); margin: -24px 0 40px;
+      font-size: 0.98rem;
     }
 
     nav {
@@ -221,6 +235,8 @@ def render_site(bundle: DomainBundle) -> str:
     email = esc(str(personal.email))
     linkedin = esc(str(personal.linkedin))
     github = esc(str(personal.github))
+    orcid = esc(str(personal.orcid)) if personal.orcid else None
+    scholar = esc(str(personal.scholar)) if personal.scholar else None
     cv_pdf = esc(personal.cv_pdf) if personal.cv_pdf else None
 
     cta = (
@@ -228,6 +244,10 @@ def render_site(bundle: DomainBundle) -> str:
         f'      <a href="{linkedin}" class="btn btn-outline" target="_blank" rel="noopener">LinkedIn</a>\n'
         f'      <a href="{github}" class="btn btn-outline" target="_blank" rel="noopener">GitHub</a>'
     )
+    if orcid:
+        cta += f'\n      <a href="{orcid}" class="btn btn-outline" target="_blank" rel="noopener">ORCID</a>'
+    if scholar:
+        cta += f'\n      <a href="{scholar}" class="btn btn-outline" target="_blank" rel="noopener">Scholar</a>'
     if cv_pdf:
         cta += f'\n      <a href="{cv_pdf}" class="btn btn-outline" target="_blank" rel="noopener">Download CV (PDF)</a>'
 
@@ -298,7 +318,7 @@ def render_site(bundle: DomainBundle) -> str:
             )
             + f'            <span class="status {"published" if p.status == "Published" else "pending"}">{esc(p.status)}</span>\n'
             + "          </div>\n"
-            + f'          <p class="authors">{esc(p.authors)}</p>\n'
+            + f'          <p class="authors">{_authors(p.authors, p.highlight_author)}</p>\n'
             + '          <div class="pub-bottom">\n'
             + f'            <span class="venue">{esc(p.venue)}</span>\n'
             + f'            <span class="period">{esc(p.date)}</span>\n'
@@ -327,10 +347,16 @@ def render_site(bundle: DomainBundle) -> str:
             + "        </div>"
             for r in web.research
         )
+        statement = (
+            f'    <p class="research-statement">{esc(personal.research_statement)}</p>\n'
+            if personal.research_statement
+            else ""
+        )
         sections_html += (
             '\n<section id="research">\n  <div class="container">\n'
             '    <h2 class="section-title">Research & Publications</h2>\n'
-            '    <div class="research-grid">\n'
+            + statement
+            + '    <div class="research-grid">\n'
             "      <div>\n"
             '        <h3 style="color:var(--text-muted);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:20px;">Publications</h3>\n'
             f"        {pub_items}\n"
@@ -353,8 +379,13 @@ def render_site(bundle: DomainBundle) -> str:
             f"          <p>{esc(p.body)}</p>\n"
             f"          {_tags(p.tags)}\n"
             + (
-                f'          <a href="{esc(str(p.link))}" class="link-btn" target="_blank" rel="noopener">View →</a>\n'
-                if p.link
+                '          <div class="links">'
+                + "".join(
+                    f'<a href="{esc(str(link.url))}" class="link-btn" target="_blank" rel="noopener">{esc(link.label)}</a>'
+                    for link in p.links
+                )
+                + "</div>\n"
+                if p.links
                 else ""
             )
             + "        </div>"
