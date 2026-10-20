@@ -108,7 +108,7 @@ def test_kind_is_explicit_and_enforced() -> None:
             kind="personal",  # type: ignore[arg-type]
         )
     p = PersonalProject(title="Snake AI", year="2021", body="Evolved nets.", order=1)
-    assert p.kind == "personal" and p.link is None
+    assert p.kind == "personal" and p.links == []
 
 
 def test_bullets_and_skills_must_be_non_empty() -> None:
@@ -169,3 +169,41 @@ def test_bundle_visible_filters_by_channel() -> None:
     web = bundle.visible("website")
     assert [e.slug for e in web.experience] == ["a", "h"]
     assert web.education == []
+
+
+def test_profile_fields_and_channel_order() -> None:
+    p = Personal(
+        **personal_kwargs(
+            orcid="https://orcid.org/0009-0005-4769-3136",
+            scholar="https://scholar.google.com/citations?hl=en&user=MKqzBNYAAAAJ",
+            research_statement="Statement.",
+            research_interests="Interests.",
+        )
+    )
+    assert str(p.orcid).endswith("0009-0005-4769-3136")
+    assert p.research_statement == "Statement."
+    assert p.research_interests == "Interests."
+
+    r1 = ResearchProject(title="Web first", year="2026", body="B", order=1, cv_order=2)
+    r2 = ResearchProject(title="CV first", year="2026", body="B", order=2, cv_order=1)
+    p1 = PersonalProject(title="Web first", year="2026", body="B", order=1, cv_order=2)
+    p2 = PersonalProject(title="CV first", year="2026", body="B", order=2, cv_order=1)
+    bundle = DomainBundle(research=[r1, r2], projects=[p1, p2])
+
+    assert [x.title for x in bundle.visible("website").research] == ["Web first", "CV first"]
+    assert [x.title for x in bundle.visible("cv").research] == ["CV first", "Web first"]
+    assert [x.title for x in bundle.visible("website").projects] == ["Web first", "CV first"]
+    assert [x.title for x in bundle.visible("cv").projects] == ["CV first", "Web first"]
+
+
+def test_publication_highlight_author() -> None:
+    pub = Publication(
+        title="T",
+        authors="A, William Dennis, B",
+        venue="V",
+        date="2025",
+        status="Published",
+        order=1,
+        highlight_author="William Dennis",
+    )
+    assert pub.highlight_author == "William Dennis"

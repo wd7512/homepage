@@ -1,7 +1,7 @@
 ---
 institution: University of Bristol
-degree: PhD, PrOAI CDT
-details: Incoming
+degree: PhD, PrO-AI CDT
+details: Doctoral Researcher
 period: Sep 2026 – Present
 order: 1
 ---

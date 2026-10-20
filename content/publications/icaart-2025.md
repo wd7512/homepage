@@ -6,4 +6,5 @@ date: Feb 2025
 order: 2
 status: Published
 link: https://research-information.bris.ac.uk/en/publications/a-framework-for-developing-robust-machine-learning-models-in-hars/
+highlight_author: William Dennis
 ---
