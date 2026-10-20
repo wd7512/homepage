@@ -71,9 +71,10 @@ def _publication_item(publication: Publication) -> str:
 
 
 def _entry(head: str, right: str, sub: str, body_tex: str) -> str:
-    parts = [f"\\entry{{{head}}}{{{right}}}"]
-    if sub:
-        parts.append(f"{{\\textit{{{sub}}}}}")
+    # Always pass the third argument, even when empty: otherwise TeX consumes
+    # the first token of the body as the subtitle argument (e.g. "A" from
+    # "A novel framework..." becomes an italic line on its own).
+    parts = [f"\\entry{{{head}}}{{{right}}}{{{sub}}}"]
     if body_tex:
         parts.append(body_tex)
     return "\n".join(parts)
