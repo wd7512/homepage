@@ -3,6 +3,7 @@ title: Evolutionary Snake AI
 tags: [Genetic Algorithms, Neural Networks]
 year: 2021
 order: 5
+icon: snake
 kind: personal
 visibility: [website]
 links:

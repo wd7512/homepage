@@ -4,6 +4,7 @@ degree: BSc (Hons) Mathematical Sciences
 details: Scientific Computing (84%) and Machine Learning (91%)
 period: Sep 2019 – Jul 2023
 order: 3
+icon: bath
 ---
 
 - Built websites in Python to support startups in SETsquared using Django.

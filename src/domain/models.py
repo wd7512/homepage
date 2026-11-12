@@ -67,6 +67,8 @@ class Experience(OrderedMixin):
     period: NonEmpty
     bullets: Annotated[list[NonEmpty], Field(min_length=1)]
     slug: NonEmpty
+    # Optional name of a decorative pixel icon or logo (website only).
+    icon: NonEmpty | None = None
 
 
 class Education(OrderedMixin):
@@ -75,6 +77,8 @@ class Education(OrderedMixin):
     details: str | None = None
     period: NonEmpty
     bullets: Annotated[list[NonEmpty], Field(min_length=1)]
+    # Optional name of a decorative pixel icon or logo (website only).
+    icon: NonEmpty | None = None
 
 
 class LinkItem(StrictBase):
@@ -90,6 +94,8 @@ class ResearchProject(OrderedMixin):
     links: list[LinkItem] = []
     body: NonEmpty
     kind: Literal["research"] = "research"
+    # Optional name of a decorative pixel-art icon (website only).
+    icon: NonEmpty | None = None
     # Optional curated ordering for the CV. Falls back to `order`.
     cv_order: Annotated[int, Field(ge=1)] | None = None
 
@@ -101,6 +107,8 @@ class PersonalProject(OrderedMixin):
     links: list[LinkItem] = []
     body: NonEmpty
     kind: Literal["personal"] = "personal"
+    # Optional name of a decorative pixel-art icon (website only).
+    icon: NonEmpty | None = None
     # Optional curated ordering for the CV. Falls back to `order`.
     cv_order: Annotated[int, Field(ge=1)] | None = None
 

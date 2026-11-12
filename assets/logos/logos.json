@@ -1,0 +1,86 @@
+{
+ "github": {
+  "palette": {
+   "k": "ink"
+  },
+  "rows": [
+   ".....kkkkkk.....",
+   "...kkkkkkkkkk...",
+   "..kkkkkkkkkkkk..",
+   ".kkk.kkkkkk.kkk.",
+   ".kkk........kkk.",
+   "kkkk........kkkk",
+   "kkk..........kkk",
+   "kkk..........kkk",
+   "kkk..........kkk",
+   "kkkk........kkkk",
+   ".kkkk......kkkk.",
+   ".kk..kk..kkkkkk.",
+   "..kk.....kkkkk..",
+   "...kkk...kkkk...",
+   ".....k...kk....."
+  ]
+ },
+ "linkedin": {
+  "palette": {
+   "b": "#0077b5",
+   "w": "#ffffff"
+  },
+  "rows": [
+   ".bbbbbbbbbbbbbb.",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbwwbbbbbbbbbbbb",
+   "bbwwbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbwwbbwwwwwwwbbb",
+   "bbwwbbwwwwwwwbbb",
+   "bbwwbbwwbbbwwbbb",
+   "bbwwbbwwbbbwwbbb",
+   "bbwwbbwwbbbwwbbb",
+   "bbwwbbwwbbbwwbbb",
+   "bbwwbbwwbbbwwbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   ".bbbbbbbbbbbbbb."
+  ]
+ },
+ "bath": {
+  "palette": {
+   "b": "#081282",
+   "f": "#c4d8ef"
+  },
+  "rows": [
+   ".....bbbbbb.....",
+   "...bbbfbbbbbb...",
+   "..bbfbbfbbfbbb..",
+   ".bbfbbbbbbfbfbb.",
+   ".bbfbbffffbbfbb.",
+   "bbfbbffffffbbfbb",
+   "bbfbbbbffbbbbfbb",
+   "bbbfbfbffbfbfbbb",
+   "bbbbbfffbffbbbbb",
+   "bbffbfffbbfbfbbb",
+   "bbbfbbfbbfbbbfbb",
+   ".bbbfbffffbbfbb.",
+   ".bbbbbbffbbfbbb.",
+   "..bbbffbbbfbbb..",
+   "...bbbbfbbfbb...",
+   ".....bbbbbb....."
+  ]
+ },
+ "bristol": {
+  "src": "bristol.png",
+  "colors": 2
+ },
+ "orcid": {
+  "src": "orcid.png",
+  "colors": 1,
+  "fill_holes": "#ffffff"
+ },
+ "steam": {
+  "src": "steam.png",
+  "colors": 1,
+  "ink": true
+ }
+}

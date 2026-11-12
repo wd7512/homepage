@@ -4,6 +4,7 @@ company: Aurora Energy Research
 location: Oxford, UK
 period: Oct 2024 – Jun 2026
 order: 3
+icon: lightning
 ---
 
 - Forecasted the impact of AI datacentre demand and collaborated with clients interested in SMRs.

@@ -3,6 +3,7 @@ title: Multi-Agent RL for Energy Markets
 tags: [RL, Energy, MARL]
 year: 2025
 order: 4
+icon: pylon
 kind: research
 visibility: [website]
 links:

@@ -4,6 +4,7 @@ tags: [PyTorch, ML, Benchmarking, Climbing]
 year: 2025-2026
 order: 2
 cv_order: 1
+icon: climber
 kind: personal
 visibility: [website, cv]
 links:

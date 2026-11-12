@@ -4,6 +4,7 @@ company: Milbotix
 location: Bristol Robotics Lab, UK
 period: Feb 2024 – Oct 2024
 order: 5
+icon: pulse
 ---
 
 - Developed a two-stage machine learning pipeline optimised for use on embedded devices using accelerometer filtering and novel Fourier features.

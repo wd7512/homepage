@@ -4,6 +4,7 @@ company: JPMorgan
 location: Bristol, UK
 period: Feb 2024 – Jul 2024
 order: 4
+icon: bank
 ---
 
 - Led a team of 4 data scientists to produce in-house quant level research into the development of trading signals derived from millisecond level limit-order-book data.

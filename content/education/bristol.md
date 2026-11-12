@@ -4,6 +4,7 @@ degree: MSc Data Science
 details: Distinction (Top 3 of cohort)
 period: Sep 2023 – Sep 2024
 order: 2
+icon: bristol
 ---
 
 - Researched theory of neural network generalisation: grokking, double descent, Lipschitz continuity.

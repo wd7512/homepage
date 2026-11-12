@@ -4,6 +4,7 @@ company: University of Bristol x National University of Singapore
 location: Bristol
 period: Jun 2026 – Jul 2026
 order: 2
+icon: wearable
 ---
 
 - Researched reinforcement learning methods for health behaviour change, supervised by Dr. Mengyan Zhang (University of Bristol) and Swapnil Mishra (National University of Singapore).
