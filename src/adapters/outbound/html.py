@@ -135,9 +135,9 @@ _CSS = """
     .contact { margin: 0; display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
     .pbtn {
       position: relative; display: inline-flex; align-items: center; justify-content: center;
-      width: 48px; height: 48px; transition: transform 0.08s;
+      width: 38.4px; height: 38.4px; transition: transform 0.08s;
     }
-    .pbtn .pix { width: 48px; height: 48px; }
+    .pbtn .pix { width: 38.4px; height: 38.4px; }
     .pbtn:hover { text-decoration: none; transform: translateY(-3px); }
     .pbtn::after {
       content: attr(data-tip); position: absolute; top: calc(100% + 10px); left: 50%;
