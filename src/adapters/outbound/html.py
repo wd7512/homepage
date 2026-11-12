@@ -76,7 +76,7 @@ _CSS = """
       --ic-gold: #e0b84a;
       --ic-green: #5a9a5a;
       --ic-red: #c8554f;
-      --ic-brown: #9a7451;
+      --ic-brown: #b38e63;
       --ic-orcid: #a6ce39;
       --ic-white: #ffffff;
     }

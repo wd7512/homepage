@@ -36,3 +36,14 @@ def test_content_icons_are_known() -> None:
     for item in [*bundle.research, *bundle.projects]:
         if item.icon:
             assert item.icon in pixel_icons.icon_names(), item.title
+
+
+@pytest.mark.parametrize("name", pixel_icons.icon_names())
+def test_icon_fills_canvas_on_longest_side(name: str) -> None:
+    """All icons share one footprint: longest side spans the full 16px."""
+    rows = pixel_icons.grid(name)
+    xs = [x for r in rows for x, ch in enumerate(r) if ch != "."]
+    ys = [y for y, r in enumerate(rows) if set(r) != {"."}]
+    width = max(xs) - min(xs) + 1
+    height = max(ys) - min(ys) + 1
+    assert max(width, height) == pixel_icons.SIZE
