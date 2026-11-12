@@ -3,7 +3,7 @@ title: Longitudinal Evaluation of a Coding-Agent Harness
 tags: [LLM, Evaluation, Benchmarking]
 year: 2026
 order: 1
-icon: chart
+icon: computer
 kind: research
 visibility: [website]
 links: []

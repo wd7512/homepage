@@ -4,7 +4,7 @@ tags: [NLP, Bias, Benchmarking]
 year: 2026
 order: 2
 cv_order: 3
-icon: magnifier
+icon: speech_bubble
 kind: research
 links:
   - label: GitHub
