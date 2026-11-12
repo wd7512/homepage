@@ -6,4 +6,4 @@ period: Sep 2026 – Present
 order: 1
 ---
 
-- Funded doctoral place under Professor Peter Flach, Department of Computer Science.
+- Funded doctoral place at the Department of Computer Science. Exploratory first year; supervisor to be confirmed.

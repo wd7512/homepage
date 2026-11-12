@@ -128,8 +128,26 @@ _CSS = """
     header { padding-top: 64px; padding-bottom: 8px; }
     h1 { font-size: 2.1rem; font-weight: 600; line-height: 1.15; margin: 0 0 6px; letter-spacing: -0.01em; }
     .role { margin: 0 0 14px; color: var(--muted); font-size: 1.05rem; }
-    .contact { margin: 0; font-size: 0.95rem; }
-    .contact .sep { color: var(--muted); padding: 0 0.45em; }
+    .contact { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+    .pbtn {
+      position: relative; display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; background: var(--bg);
+      border: 2px solid var(--ic-ink); box-shadow: 3px 3px 0 var(--ic-ink);
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+    .pbtn .pix { width: 22px; height: 22px; }
+    .pbtn:hover { text-decoration: none; transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ic-ink); }
+    .pbtn::after {
+      content: attr(data-tip); position: absolute; top: calc(100% + 10px); left: 50%;
+      transform: translateX(-50%); background: var(--ic-ink); color: var(--bg);
+      font-size: 0.75rem; line-height: 1.4; padding: 2px 8px; white-space: nowrap;
+      opacity: 0; pointer-events: none; transition: opacity 0.1s; z-index: 2;
+    }
+    .pbtn:hover::after, .pbtn:focus-visible::after { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      .pbtn, .pbtn::after { transition: none; }
+      .pbtn:hover { transform: none; }
+    }
 
     section { margin-top: 44px; }
     h2 {
@@ -188,30 +206,29 @@ def render_site(bundle: DomainBundle) -> str:
         raise ValueError("content/personal.md is required to render the site")
 
     name = esc(personal.name)
-    email = esc(str(personal.email))
 
-    contact_links = [f'<a href="mailto:{email}">Email</a>']
-    if personal.cv_pdf:
-        contact_links.append(
-            f'<a href="{esc(personal.cv_pdf)}" target="_blank" rel="noopener">CV (PDF)</a>'
+    def pbtn(kind: str, label: str, href: str, external: bool = True) -> str:
+        target = ' target="_blank" rel="noopener"' if external else ""
+        return (
+            f'<a class="pbtn" href="{esc(href)}"{target} aria-label="{esc(label)}" '
+            f'data-tip="{esc(label)}">{pixel_icons.svg(pixel_icons.LINK_ICONS[kind])}</a>'
         )
+
+    contact_links = [pbtn("email", "Email", f"mailto:{personal.email}", external=False)]
+    if personal.cv_pdf:
+        contact_links.append(pbtn("cv", "CV (PDF)", personal.cv_pdf))
     if personal.scholar:
-        contact_links.append(_ext(str(personal.scholar), "Google Scholar", cls=""))
+        contact_links.append(pbtn("scholar", "Google Scholar", str(personal.scholar)))
     if personal.orcid:
-        contact_links.append(_ext(str(personal.orcid), "ORCID", cls=""))
-    contact_links.append(_ext(str(personal.github), "GitHub", cls=""))
-    contact_links.append(_ext(str(personal.linkedin), "LinkedIn", cls=""))
-    contact = '<span class="sep">·</span>'.join(contact_links)
+        contact_links.append(pbtn("orcid", "ORCID", str(personal.orcid)))
+    contact_links.append(pbtn("github", "GitHub", str(personal.github)))
+    contact_links.append(pbtn("linkedin", "LinkedIn", str(personal.linkedin)))
+    contact = "".join(contact_links)
 
     sections_html = ""
 
-    if personal.research_statement or personal.research_interests:
-        inner = ""
-        if personal.research_statement:
-            inner += f"  <p>{esc(personal.research_statement)}</p>\n"
-        if personal.research_interests:
-            inner += f'  <p class="interests">{esc(personal.research_interests)}</p>'
-        sections_html += _section("about", "About", inner)
+    if personal.research_statement:
+        sections_html += _section("about", "About", f"  <p>{esc(personal.research_statement)}</p>")
 
     if web.publications:
         items = []
