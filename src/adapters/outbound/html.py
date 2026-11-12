@@ -34,8 +34,8 @@ def _authors(authors: str, highlight: str | None) -> str:
     return rendered
 
 
-def _ext(href: str, label: str, cls: str = ' class="ext"') -> str:
-    return f'<a{cls} href="{esc(href)}" target="_blank" rel="noopener">{esc(label)}</a>'
+def _ext(href: str, label: str) -> str:
+    return f'<a class="ext" href="{esc(href)}" target="_blank" rel="noopener">{esc(label)}</a>'
 
 
 def _link_line(links: list[LinkItem]) -> str:
@@ -85,7 +85,6 @@ _CSS = """
       --ic-honey: #f3dc8b;
       --ic-scholar: #4285f4;
       --ic-scholarlight: #a1c2fa;
-      --ic-orcid: #a6ce39;
       --ic-white: #ffffff;
       --ic-cream: #f1dfbd;
       --ic-walnut: #845d42;
@@ -142,7 +141,6 @@ _CSS = """
     .ic-honey { fill: var(--ic-honey); }
     .ic-scholar { fill: var(--ic-scholar); }
     .ic-scholarlight { fill: var(--ic-scholarlight); }
-    .ic-orcid { fill: var(--ic-orcid); }
     .ic-white { fill: var(--ic-white); }
     .ic-cream { fill: var(--ic-cream); }
     .ic-walnut { fill: var(--ic-walnut); }
@@ -180,7 +178,7 @@ _CSS = """
     }
     h3 { font-size: 1rem; font-weight: 600; margin: 0; }
     p { margin: 0 0 10px; }
-    .interests, .meta { color: var(--muted); font-size: 0.92rem; }
+    .meta { color: var(--muted); font-size: 0.92rem; }
     .links { font-size: 0.92rem; }
     .when, .period { color: var(--muted); font-size: 0.92rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 

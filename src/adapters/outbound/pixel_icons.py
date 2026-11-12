@@ -25,7 +25,6 @@ PALETTE: dict[str, str] = {
     "r": "red",
     "n": "brown",
     "h": "honey",  # light gold
-    "o": "orcid",  # ORCID brand green (fixed in both themes)
     "s": "scholar",  # Scholar blue (fixed in both themes)
     "c": "scholarlight",
     "x": "white",  # pure white (fixed in both themes)
@@ -34,19 +33,6 @@ PALETTE: dict[str, str] = {
     "v": "terminalbg",
     "e": "terminalgreen",
 }
-
-
-def _chart() -> tuple[str, ...]:
-    """Three bars on an axis, 16 wide x 14 tall."""
-    rows = []
-    for r in range(13):
-        cells = ["k"] + ["."] * 15
-        for c0, top, ch in ((2, 7, "y"), (7, 4, "l"), (12, 1, "a")):
-            if r >= top:
-                cells[c0 : c0 + 4] = [ch] * 4
-        rows.append("".join(cells))
-    rows.append("k" * 16)
-    return tuple(rows)
 
 
 def _pulse() -> tuple[str, ...]:
@@ -68,24 +54,6 @@ def _pulse() -> tuple[str, ...]:
                 cells[i + 1] = "r"
         thick.append("".join(cells))
     return ("k" * 16, *("k" + t + "k" for t in thick), "k" * 16)
-
-
-def _outlined(mask: tuple[str, ...], fill: str = "y") -> tuple[str, ...]:
-    """Fill a ``#`` mask with ``fill`` and add a 1px ``k`` outline around it."""
-    h, w = len(mask), len(mask[0])
-    filled = {(y + 1, x + 1) for y, row in enumerate(mask) for x, c in enumerate(row) if c == "#"}
-    rows = []
-    for y in range(h + 2):
-        row = ""
-        for x in range(w + 2):
-            if (y, x) in filled:
-                row += fill
-            elif any((y + dy, x + dx) in filled for dy in (-1, 0, 1) for dx in (-1, 0, 1)):
-                row += "k"
-            else:
-                row += "."
-        rows.append(row)
-    return tuple(rows)
 
 
 def _sprite(layers: list[tuple[str, list[tuple[int, int]]]], after=()) -> tuple[str, ...]:
@@ -208,16 +176,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "knnnnnnnnnnnnnnk",
         ".kkkkkkkkkkkkkk.",
     ),
-    "battery": (
-        "kkkkkkkkkkkkkk..",
-        "kwwwwwwwwwwwwk..",
-        "kgggwgggwgggwk..",
-        "kgggwgggwgggwkkk",
-        "kgggwgggwgggwkkk",
-        "kgggwgggwgggwk..",
-        "kwwwwwwwwwwwwk..",
-        "kkkkkkkkkkkkkk..",
-    ),
     "satellite": (
         "......kyyk......",
         ".......kk.......",
@@ -324,24 +282,6 @@ _ART: dict[str, tuple[str, ...]] = {
         ".......krkkkrk..",
         ".......kk...kk..",
     ),
-    "faultgrid": (
-        "............y...",
-        "............y...",
-        "..........yyxyy.",
-        "kkkkkkkkkkkky...",
-        "kwwwklllkaaay...",
-        "kwwwklllkaaak...",
-        "kwwwklllkaaak...",
-        "kkkkkkkkkkkkk...",
-        "kaaakrrrklllk...",
-        "kaaakrxrklllk...",
-        "kaaakrrrklllk...",
-        "kkkkkkkkkkkkk...",
-        "klllkaaakwwwk...",
-        "klllkaaakwwwk...",
-        "klllkaaakwwwk...",
-        "kkkkkkkkkkkkk...",
-    ),
     "bank": (
         ".......kk.......",
         "......kwwk......",
@@ -378,25 +318,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "kkkkkkkkkkkkkkkk",
     ),
     "climber": _climber(),
-    "bulb": (
-        "...kkkkkk...",
-        "..kyyyyyyk..",
-        ".kyyyyyyyyk.",
-        "kyyxxyyyyyyk",
-        "kyyxyyyyyyyk",
-        "kyyyyyyyyyyk",
-        "kyyyyyyyyyyk",
-        "kyyyyyyyyyyk",
-        ".kyyyyyyyyk.",
-        "..kyyyyyyk..",
-        "...kyyyyk...",
-        "...kkkkkk...",
-        "...kaaaak...",
-        "...kkkkkk...",
-        "....kaak....",
-        ".....kk.....",
-    ),
-    "chart": _chart(),
     "chip": (
         "...k.k.k.k.k....",
         "...k.k.k.k.k....",
@@ -429,22 +350,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "kvvvvvvvvvvvvvvk",
         ".kkkkkkkkkkkkkk.",
     ),
-    "computer": (
-        ".kkkkkkkkkkkkkk.",
-        ".kllllllllllllk.",
-        ".klxxlllllllllk.",
-        ".klxllllllllllk.",
-        ".kllllllllllllk.",
-        ".kllllllllllllk.",
-        ".kllllllllllllk.",
-        ".kkkkkkkkkkkkkk.",
-        "......kaak......",
-        "....kkkkkkkk....",
-        "................",
-        ".kkkkkkkkkkkkkk.",
-        "kwwwwwwwwwwwwwwk",
-        "kkkkkkkkkkkkkkkk",
-    ),
     "controller": (
         "..kkkkkkkkkkkk..",
         ".kllllllllllllk.",
@@ -474,37 +379,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "kwwwwwwwwwwk",
         "kkkkkkkkkkkk",
     ),
-    "flask": (
-        "...kkkkkk...",
-        "....kwwk....",
-        "....kwwk....",
-        "....kwwk....",
-        "....kwwk....",
-        "...kwwwwk...",
-        "..kwwwwwwk..",
-        ".kwwwwlwwwk.",
-        ".kgxxgggggk.",
-        "kggggggggggk",
-        "kggxgggggggk",
-        "kggggggggggk",
-        "kggggggggggk",
-        ".kggggggggk.",
-        "..kkkkkkkk..",
-    ),
-    "heart": (
-        "..kkkk....kkkk..",
-        ".krrrrrkkrrrrrk.",
-        "krrxrrrrrrrrrrrk",
-        "krrrrrrrrrrrrrrk",
-        "krrrrrrrrrrrrrrk",
-        ".krrrrrrrrrrrrk.",
-        "..krrrrrrrrrrk..",
-        "...krrrrrrrrk...",
-        "....krrrrrrk....",
-        ".....krrrrk.....",
-        "......krrk......",
-        ".......kk.......",
-    ),
     "magnifier": (
         "...kkkk.........",
         ".kkxlllkk.......",
@@ -532,24 +406,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "kwwwwwwwwwwwwwwk",
         "kwwwwwwwwwwwwwwk",
         "kkkkkkkkkkkkkkkk",
-    ),
-    "pawn": (
-        "....kkkk....",
-        "..kkaaaakk..",
-        "..klaaaaak..",
-        "..klaaaaak..",
-        "..kaaaaaak..",
-        "...kaaaak...",
-        "....kaak....",
-        "..kkaaaakk..",
-        "...klaaak...",
-        "...klaaak...",
-        "...kaaaak...",
-        "..kaaaaaak..",
-        ".kaaaaaaaak.",
-        ".kaaaaaaaak.",
-        "kaaaaaaaaaak",
-        "kkkkkkkkkkkk",
     ),
     "pulse": _pulse(),
     "runner": _runner(),
@@ -654,7 +510,6 @@ LINK_ICONS: dict[str, str] = {
     "linkedin": "linkedin",
 }
 SECTION_ICONS: dict[str, str] = {
-    "about": "bulb",
     "publications": "book",
     "research": "magnifier",
     "education": "certificate",

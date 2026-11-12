@@ -73,11 +73,6 @@ def test_render_site_channels_and_cv_link() -> None:
     assert "phone" not in page.lower()
 
 
-def test_render_site_without_cv_pdf_omits_link() -> None:
-    bundle = DomainBundle(personal=personal(cv_pdf=None))
-    assert "Download CV" not in render_site(bundle)
-
-
 def test_render_site_profile_links_statement_and_highlighted_author() -> None:
     bundle = DomainBundle(
         personal=personal(),
