@@ -83,6 +83,8 @@ _CSS = """
       --ic-red: #c8554f;
       --ic-brown: #b38e63;
       --ic-honey: #f3dc8b;
+      --ic-scholar: #4285f4;
+      --ic-scholarlight: #a1c2fa;
       --ic-orcid: #a6ce39;
       --ic-white: #ffffff;
     }
@@ -97,7 +99,7 @@ _CSS = """
         --ic-ink: #d6d6d6;
         --ic-paper: #2b2e33;
         --ic-blue: #6f94cc;
-        --ic-sky: #3d5a85;
+        --ic-sky: #a9c1e4;
         --ic-gold: #d9b24a;
         --ic-green: #6fb36f;
         --ic-red: #d9665f;
@@ -134,6 +136,8 @@ _CSS = """
     .ic-red { fill: var(--ic-red); }
     .ic-brown { fill: var(--ic-brown); }
     .ic-honey { fill: var(--ic-honey); }
+    .ic-scholar { fill: var(--ic-scholar); }
+    .ic-scholarlight { fill: var(--ic-scholarlight); }
     .ic-orcid { fill: var(--ic-orcid); }
     .ic-white { fill: var(--ic-white); }
 
@@ -143,9 +147,9 @@ _CSS = """
     .contact { margin: 0; display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
     .pbtn {
       position: relative; display: inline-flex; align-items: center; justify-content: center;
-      width: 38.4px; height: 38.4px; transition: transform 0.08s;
+      width: 32px; height: 32px; transition: transform 0.08s;
     }
-    .pbtn .pix { width: 38.4px; height: 38.4px; }
+    .pbtn .pix { width: 32px; height: 32px; }
     .pbtn:hover { text-decoration: none; transform: translateY(-3px); }
     .pbtn::after {
       content: attr(data-tip); position: absolute; top: calc(100% + 10px); left: 50%;

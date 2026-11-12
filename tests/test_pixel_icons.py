@@ -59,6 +59,6 @@ def test_logo_is_16x16_and_renders(name: str) -> None:
 
 
 def test_logos_cover_expected_brands() -> None:
-    assert {"github", "linkedin", "orcid", "scholar", "steam", "bristol", "bath"} <= set(
+    assert {"github", "linkedin", "orcid", "steam", "bristol", "bath"} <= set(
         pixel_icons.logo_names()
     )

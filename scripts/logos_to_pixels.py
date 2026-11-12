@@ -6,6 +6,9 @@ Reads ``assets/logos/logos.json`` and writes
 ``src/adapters/outbound/logo_pixels.json``, which the site renderer inlines as
 SVG. Needs Pillow (a dev-only dependency; the site build itself does not).
 
+A logo that cannot survive downsampling can instead be hand-drawn: give its
+``logos.json`` entry ``rows`` and ``palette`` and they are used as-is.
+
 Pipeline per logo: crop to the alpha bounding box, pad to a square, downsample
 to 16x16 with Lanczos (premultiplied alpha, so no halos), threshold alpha,
 then reduce to a small palette. Near-black pixels can be mapped to the page's
@@ -75,7 +78,13 @@ def _nearest(
     return min(palette, key=lambda c: sum((a - b) ** 2 for a, b in zip(rgb, c, strict=True)))
 
 
-def convert(img: Image.Image, colors: int, ink: bool = False, size: int = SIZE) -> dict:
+def convert(
+    img: Image.Image,
+    colors: int,
+    ink: bool = False,
+    size: int = SIZE,
+    fill_holes: str | None = None,
+) -> dict:
     """Return ``{"palette": {char: "#rrggbb" | "ink"}, "rows": [size strings]}``."""
     square = to_square(img)
     palette_rgb = _dominant_colours(square, colors)
@@ -96,7 +105,47 @@ def convert(img: Image.Image, colors: int, ink: bool = False, size: int = SIZE) 
                 char_of[value] = next(chars)
                 palette[char_of[value]] = value
             grid[y][x] = char_of[value]
+    if fill_holes:
+        _fill_holes(grid, palette, char_of, fill_holes, chars)
     return {"palette": palette, "rows": ["".join(r) for r in grid]}
+
+
+def _fill_holes(grid, palette, char_of, colour, chars) -> None:
+    """Paint enclosed transparent areas (e.g. the letters in a logo) with ``colour``."""
+    size = len(grid)
+    outside: set[tuple[int, int]] = set()
+    stack = [
+        (y, x) for y in range(size) for x in range(size) if y in (0, size - 1) or x in (0, size - 1)
+    ]
+    while stack:
+        y, x = stack.pop()
+        if (y, x) in outside or not (0 <= y < size and 0 <= x < size) or grid[y][x] != ".":
+            continue
+        outside.add((y, x))
+        stack += [(y + 1, x), (y - 1, x), (y, x + 1), (y, x - 1)]
+    if colour not in char_of:
+        char_of[colour] = next(chars)
+        palette[char_of[colour]] = colour
+    for y in range(size):
+        for x in range(size):
+            if grid[y][x] == "." and (y, x) not in outside:
+                grid[y][x] = char_of[colour]
+
+
+def override(cfg: dict, size: int = SIZE) -> dict:
+    """Hand-drawn entry: ``rows`` + ``palette`` straight from logos.json (centred, validated)."""
+    rows, palette = list(cfg["rows"]), dict(cfg["palette"])
+    width = len(rows[0])
+    if any(len(r) != width for r in rows) or width > size or len(rows) > size:
+        raise ValueError("override rows must be equal-width and at most 16x16")
+    unknown = set("".join(rows)) - set(palette) - {"."}
+    if unknown:
+        raise ValueError(f"override uses characters missing from its palette: {sorted(unknown)}")
+    left, top = (size - width) // 2, (size - len(rows)) // 2
+    padded = ["." * size] * top
+    padded += ["." * left + r + "." * (size - width - left) for r in rows]
+    padded += ["." * size] * (size - len(padded))
+    return {"palette": palette, "rows": padded}
 
 
 def build(config_path: Path = SRC_DIR / "logos.json") -> dict:
@@ -104,8 +153,16 @@ def build(config_path: Path = SRC_DIR / "logos.json") -> dict:
     out = {}
     for name in sorted(config):
         cfg = config[name]
+        if "rows" in cfg:
+            out[name] = override(cfg)
+            continue
         with Image.open(config_path.parent / cfg["src"]) as img:
-            out[name] = convert(img, colors=cfg.get("colors", 4), ink=cfg.get("ink", False))
+            out[name] = convert(
+                img,
+                colors=cfg.get("colors", 4),
+                ink=cfg.get("ink", False),
+                fill_holes=cfg.get("fill_holes"),
+            )
     return out
 
 

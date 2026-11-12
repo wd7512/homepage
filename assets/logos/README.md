@@ -10,7 +10,11 @@ trademarks belong to their owners.
    SVG first if needed, e.g. 512px with a transparent background).
 2. Add an entry to `logos.json`: `src` (file), `colors` (max palette size),
    and optionally `"ink": true` to map near-black pixels to the theme's ink
-   colour so a black mark stays visible in dark mode.
+   colour so a black mark stays visible in dark mode, or `"fill_holes": "#ffffff"`
+   to paint enclosed holes (e.g. the letters in ORCID's mark) so they don't take the page
+   background. A logo that is too detailed for automatic downsampling can be
+   hand-drawn instead: give its entry `rows` (up to 16 equal-width strings) and
+   `palette` and they are used as-is.
 3. Run the converter (needs the dev dependency Pillow):
 
    ```
@@ -31,10 +35,9 @@ both the source and the generated JSON.
 
 | Name | Source | Licence / note |
 | --- | --- | --- |
-| github | Simple Icons, https://cdn.simpleicons.org/github | CC0; GitHub mark |
+| github | Hand-drawn 16x16 trace of the GitHub mark (Simple Icons, CC0, as reference) | Palette uses the theme ink colour |
 | orcid | Simple Icons, https://cdn.simpleicons.org/orcid | CC0; ORCID iD mark |
-| scholar | Simple Icons, https://cdn.simpleicons.org/googlescholar | CC0; Google Scholar mark |
 | steam | Simple Icons, https://cdn.simpleicons.org/steam | CC0; Steam logo |
-| linkedin | Wikimedia Commons, `File:LinkedIn_icon.svg` | LinkedIn "in" mark |
+| linkedin | Hand-drawn 16x16 version of the LinkedIn "in" mark (reference: Wikimedia Commons `File:LinkedIn_icon.svg`) | Brand blue `#0077b5` |
 | bristol | https://www.bristol.ac.uk (favicon-32x32.png) | University of Bristol official site icon; the 32px favicon downsamples better than the 180px touch icon |
-| bath | https://www.bath.ac.uk (apple-touch-icon, 180px) | University of Bath official site icon |
+| bath | Hand-drawn 16x16 medallion based on the University of Bath site icon | The 180px icon's opaque dark tile and detailed face do not survive downsampling |
