@@ -164,6 +164,7 @@ _CSS = """
     }
 
     section { margin-top: 44px; }
+    #about { padding-top: 12px; }
     h2 {
       display: flex; align-items: center; gap: 0.5em;
       font-size: 1.3rem; font-weight: 600; margin: 0 0 16px;
@@ -242,7 +243,7 @@ def render_site(bundle: DomainBundle) -> str:
     sections_html = ""
 
     if personal.research_statement:
-        sections_html += _section("about", "About", f"  <p>{esc(personal.research_statement)}</p>")
+        sections_html += f'\n<p id="about">{esc(personal.research_statement)}</p>'
 
     if web.publications:
         items = []

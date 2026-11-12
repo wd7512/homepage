@@ -116,6 +116,54 @@ def _climber() -> tuple[str, ...]:
     return _sprite(layers, after=[("n", [(r, 13) for r in range(12)])])
 
 
+def _runner() -> tuple[str, ...]:
+    """A runner leaning forward, with bent arms and a long stride."""
+    return _sprite(
+        [
+            (
+                "a",
+                [
+                    (9, 7),
+                    (10, 6),
+                    (11, 5),
+                    (11, 4),
+                    (11, 3),
+                    (10, 2),
+                    (9, 8),
+                    (10, 9),
+                    (11, 10),
+                    (12, 9),
+                    (13, 8),
+                    (14, 8),
+                ],
+            ),
+            (
+                "r",
+                [
+                    (5, 8),
+                    (5, 9),
+                    (6, 7),
+                    (6, 8),
+                    (6, 9),
+                    (7, 7),
+                    (7, 8),
+                    (8, 6),
+                    (8, 7),
+                    (8, 8),
+                    (5, 6),
+                    (5, 5),
+                    (6, 4),
+                    (6, 10),
+                    (7, 11),
+                    (7, 12),
+                ],
+            ),
+            ("y", [(2, 10), (2, 11), (3, 9), (3, 10), (3, 11), (4, 9), (4, 4), (3, 4), (6, 13)]),
+            ("n", [(1, 9), (1, 10), (1, 11), (2, 9), (9, 1), (9, 2), (14, 8), (14, 9)]),
+        ]
+    )
+
+
 # Icons are centred on a 16x16 canvas; whitespace around them is fine.
 _ART: dict[str, tuple[str, ...]] = {
     "book": (
@@ -474,6 +522,25 @@ _ART: dict[str, tuple[str, ...]] = {
         "kkkkkkkkkkkk",
     ),
     "pulse": _pulse(),
+    "runner": _runner(),
+    "pylon": (
+        ".......kk.......",
+        "......k..k......",
+        "......k..k......",
+        "....kkkkkkkk....",
+        "...k..k..k..k...",
+        ".....k.kk.k.....",
+        ".....k.kk.k.....",
+        "..kkkkkkkkkkkk..",
+        ".k..k.k..k.k..k.",
+        "....k..kk..k....",
+        "....k.k..k.k....",
+        "....kk....kk....",
+        "...k..k..k..k...",
+        "...k...kk...k...",
+        "..k...k..k...k..",
+        ".kkkkk....kkkkk.",
+    ),
     "speech_bubble": (
         "..kkkkkkkkkkkk..",
         ".kwwwwwwwwwwwwk.",

@@ -4,7 +4,7 @@ tags: [Reinforcement Learning, Healthcare, Simulation]
 year: 2026
 order: 3
 cv_order: 2
-icon: heart
+icon: runner
 kind: research
 links:
   - label: GitHub
