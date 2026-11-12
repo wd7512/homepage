@@ -21,6 +21,8 @@ PALETTE: dict[str, str] = {
     "g": "green",
     "r": "red",
     "n": "brown",
+    "o": "orcid",  # ORCID brand green (fixed in both themes)
+    "x": "white",  # pure white (fixed in both themes)
 }
 
 _ART: dict[str, tuple[str, ...]] = {
@@ -243,17 +245,22 @@ _ART: dict[str, tuple[str, ...]] = {
         "kkkkkkkkkk",
     ),
     "orcid": (
-        "...kkkkkk...",
-        "..kggggggk..",
-        ".kgggwggggk.",
-        "kggggggggggk",
-        "kggggwgggggk",
-        "kggggwgggggk",
-        "kggggwgggggk",
-        "kggggwgggggk",
-        ".kggggggggk.",
-        "..kggggggk..",
-        "...kkkkkk...",
+        "....oooooooo....",
+        "..oooooooooooo..",
+        ".oooooooooooooo.",
+        ".oooooooooooooo.",
+        "oooxxoxxxxxooooo",
+        "oooxxoxxxxxxoooo",
+        "ooooooxxoooxxooo",
+        "oooxxoxxoooxxooo",
+        "oooxxoxxoooxxooo",
+        "oooxxoxxoooxxooo",
+        "oooxxoxxoooxxooo",
+        "oooxxoxxxxxxoooo",
+        ".ooxxoxxxxxoooo.",
+        ".oooooooooooooo.",
+        "..oooooooooooo..",
+        "....oooooooo....",
     ),
     "github": (
         "..kk......kk..",

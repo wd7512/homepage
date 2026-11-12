@@ -77,6 +77,8 @@ _CSS = """
       --ic-green: #5a9a5a;
       --ic-red: #c8554f;
       --ic-brown: #9a7451;
+      --ic-orcid: #a6ce39;
+      --ic-white: #ffffff;
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -113,7 +115,7 @@ _CSS = """
     a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
     .pix {
-      width: 1.3em; height: 1.3em; flex: none;
+      width: 32px; height: 32px; flex: none;
       image-rendering: pixelated;
     }
     .ic-ink { fill: var(--ic-ink); }
@@ -124,19 +126,19 @@ _CSS = """
     .ic-green { fill: var(--ic-green); }
     .ic-red { fill: var(--ic-red); }
     .ic-brown { fill: var(--ic-brown); }
+    .ic-orcid { fill: var(--ic-orcid); }
+    .ic-white { fill: var(--ic-white); }
 
     header { padding-top: 64px; padding-bottom: 8px; }
     h1 { font-size: 2.1rem; font-weight: 600; line-height: 1.15; margin: 0 0 6px; letter-spacing: -0.01em; }
     .role { margin: 0 0 14px; color: var(--muted); font-size: 1.05rem; }
-    .contact { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+    .contact { margin: 0; display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
     .pbtn {
       position: relative; display: inline-flex; align-items: center; justify-content: center;
-      width: 38px; height: 38px; background: var(--bg);
-      border: 2px solid var(--ic-ink); box-shadow: 3px 3px 0 var(--ic-ink);
-      transition: transform 0.08s, box-shadow 0.08s;
+      width: 48px; height: 48px; transition: transform 0.08s;
     }
-    .pbtn .pix { width: 22px; height: 22px; }
-    .pbtn:hover { text-decoration: none; transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ic-ink); }
+    .pbtn .pix { width: 48px; height: 48px; }
+    .pbtn:hover { text-decoration: none; transform: translateY(-3px); }
     .pbtn::after {
       content: attr(data-tip); position: absolute; top: calc(100% + 10px); left: 50%;
       transform: translateX(-50%); background: var(--ic-ink); color: var(--bg);
@@ -171,7 +173,7 @@ _CSS = """
       display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
     }
     .item-head h3 { display: flex; align-items: center; gap: 0.5em; }
-    .item-head h3 .pix { align-self: center; }
+    .item-head h3 .pix { align-self: center; margin: -6px 0; }
     .item p { margin: 4px 0 6px; font-size: 0.97rem; }
     .sub { margin: 0; color: var(--muted); font-style: italic; font-size: 0.95rem; }
     .item ul { margin: 6px 0 0; padding-left: 1.2em; font-size: 0.95rem; }
@@ -179,7 +181,7 @@ _CSS = """
 
     ul.plain { list-style: none; margin: 0; padding: 0; }
     ul.plain li { margin: 0 0 12px; font-size: 0.97rem; }
-    ul.plain .pix { vertical-align: -0.2em; margin-right: 0.45em; }
+    ul.plain .pix { vertical-align: middle; margin: -6px 0.45em -6px 0; }
 
     dl.skills { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; font-size: 0.97rem; }
     dl.skills dt { font-weight: 600; }
