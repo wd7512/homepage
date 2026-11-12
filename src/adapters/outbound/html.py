@@ -87,6 +87,10 @@ _CSS = """
       --ic-scholarlight: #a1c2fa;
       --ic-orcid: #a6ce39;
       --ic-white: #ffffff;
+      --ic-cream: #f1dfbd;
+      --ic-walnut: #845d42;
+      --ic-terminalbg: #101b13;
+      --ic-terminalgreen: #39ff78;
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -140,6 +144,10 @@ _CSS = """
     .ic-scholarlight { fill: var(--ic-scholarlight); }
     .ic-orcid { fill: var(--ic-orcid); }
     .ic-white { fill: var(--ic-white); }
+    .ic-cream { fill: var(--ic-cream); }
+    .ic-walnut { fill: var(--ic-walnut); }
+    .ic-terminalbg { fill: var(--ic-terminalbg); }
+    .ic-terminalgreen { fill: var(--ic-terminalgreen); }
 
     header { padding-top: 64px; padding-bottom: 8px; }
     h1 { font-size: 2.1rem; font-weight: 600; line-height: 1.15; margin: 0 0 6px; letter-spacing: -0.01em; }
