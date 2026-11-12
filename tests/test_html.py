@@ -64,7 +64,7 @@ def test_render_site_channels_and_cv_link() -> None:
     assert "William Dennis" in page
     assert "PhD Researcher (PrO-AI CDT)" in page
     assert 'href="cv.pdf"' in page
-    assert "Download CV (PDF)" in page
+    assert "CV (PDF)" in page
     assert "Aurora" in page
     assert "Forecasted &lt;demand&gt;." in page
     assert "Hobby" in page  # website-visible
@@ -119,4 +119,5 @@ def test_render_site_profile_links_statement_and_highlighted_author() -> None:
     assert 'href="https://orcid.org/0009-0005-4769-3136"' in page
     assert 'href="https://scholar.google.com/citations?hl=en&amp;user=MKqzBNYAAAAJ"' in page
     assert "<strong>William Dennis</strong>" in page
-    assert page.count('class="link-btn"') == 3
+    assert page.count('class="ext"') == 3
+    assert page.count('<svg class="pix"') >= 3  # section + item icons

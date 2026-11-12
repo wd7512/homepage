@@ -4,6 +4,7 @@ tags: [Agents, Benchmarking, Game AI]
 year: 2026
 order: 1
 cv_order: 2
+icon: controller
 kind: personal
 visibility: [website, cv]
 links:

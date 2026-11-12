@@ -4,6 +4,7 @@ tags: [Signal Processing, Time-Series, Medical ML]
 year: 2024–2025
 order: 6
 cv_order: 4
+icon: pulse
 kind: research
 links:
   - label: Publication

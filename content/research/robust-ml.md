@@ -4,6 +4,7 @@ tags: [PyTorch, Research, Computer Vision]
 year: 2025
 order: 5
 cv_order: 1
+icon: shield
 kind: research
 links:
   - label: Framework (GitHub)
