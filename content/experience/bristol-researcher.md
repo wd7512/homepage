@@ -4,7 +4,7 @@ company: University of Bristol
 location: Bristol, UK
 period: Oct 2024 – Present
 order: 1
-icon: faultgrid
+icon: neural_network
 ---
 
 - Released and active owner of an open-source fault-injection framework used within the department for the wider research community.

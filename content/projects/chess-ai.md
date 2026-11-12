@@ -3,7 +3,7 @@ title: Chess AI
 tags: [Education, Game AI, Computer Vision]
 year: 2022–2026
 order: 3
-icon: pawn
+icon: chessboard
 kind: personal
 visibility: [website]
 links:
