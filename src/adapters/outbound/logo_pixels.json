@@ -1,25 +1,26 @@
 {
  "bath": {
   "palette": {
-   "b": "#081282"
+   "b": "#081282",
+   "f": "#c4d8ef"
   },
   "rows": [
-   "....b..b..b.....",
-   "....bbb.b.bbb...",
-   "....b.b.bbb.bb..",
-   "..b.b..b.b.b.b..",
-   "..bb..bbbb.bb.b.",
-   ".bb..b....b.bbb.",
-   "..b..bb..bbb.bbb",
-   "bbb.b......b...b",
-   "b.bbb.bb...bbbbb",
-   "bb..b..bb..b.bb.",
-   "b..bb..bbbb...b.",
-   ".bbbbbb...b.bbb.",
-   "..b...b..b.bbb..",
-   "....b..bb....b..",
-   "...bb..b.b.bb...",
-   ".....bb...b....."
+   ".....bbbbbb.....",
+   "...bbbfbbbbbb...",
+   "..bbfbbfbbfbbb..",
+   ".bbfbbbbbbfbfbb.",
+   ".bbfbbffffbbfbb.",
+   "bbfbbffffffbbfbb",
+   "bbfbbbbffbbbbfbb",
+   "bbbfbfbffbfbfbbb",
+   "bbbbbfffbffbbbbb",
+   "bbffbfffbbfbfbbb",
+   "bbbfbbfbbfbbbfbb",
+   ".bbbfbffffbbfbb.",
+   ".bbbbbbffbbfbbb.",
+   "..bbbffbbbfbbb..",
+   "...bbbbfbbfbb...",
+   ".....bbbbbb....."
   ]
  },
  "bristol": {
