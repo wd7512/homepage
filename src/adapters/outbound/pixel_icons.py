@@ -9,6 +9,9 @@ page's light/dark theme. Icons are decorative (``aria-hidden``).
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 SIZE = 16
 
 # char -> CSS class suffix. Actual colours live in the page stylesheet.
@@ -21,6 +24,7 @@ PALETTE: dict[str, str] = {
     "g": "green",
     "r": "red",
     "n": "brown",
+    "h": "honey",  # light gold
     "o": "orcid",  # ORCID brand green (fixed in both themes)
     "x": "white",  # pure white (fixed in both themes)
 }
@@ -60,25 +64,54 @@ def _pulse() -> tuple[str, ...]:
     return ("k" * 16, *("k" + t + "k" for t in thick), "k" * 16)
 
 
-# Every icon fills the 16x16 canvas on its longest side (enforced by tests).
+def _outlined(mask: tuple[str, ...], fill: str = "y") -> tuple[str, ...]:
+    """Fill a ``#`` mask with ``fill`` and add a 1px ``k`` outline around it."""
+    h, w = len(mask), len(mask[0])
+    filled = {(y + 1, x + 1) for y, row in enumerate(mask) for x, c in enumerate(row) if c == "#"}
+    rows = []
+    for y in range(h + 2):
+        row = ""
+        for x in range(w + 2):
+            if (y, x) in filled:
+                row += fill
+            elif any((y + dy, x + dx) in filled for dy in (-1, 0, 1) for dx in (-1, 0, 1)):
+                row += "k"
+            else:
+                row += "."
+        rows.append(row)
+    return tuple(rows)
+
+
+def _climber() -> tuple[str, ...]:
+    """A climber on a wall of coloured holds, 16x16."""
+    g = [["l"] * 16 for _ in range(16)]
+    for i in range(16):
+        g[0][i] = g[15][i] = g[i][0] = g[i][15] = "k"
+    holds = {
+        (2, 3): "g",
+        (2, 12): "r",
+        (14, 4): "y",
+        (14, 11): "g",
+        (8, 2): "y",
+        (7, 13): "g",
+        (10, 13): "r",
+        (11, 2): "r",
+        (5, 2): "g",
+        (4, 13): "y",
+    }
+    for (y, x), c in holds.items():
+        g[y][x] = c
+    body = [(4, 7), (4, 8), (5, 7), (5, 8)]  # head
+    body += [(y, x) for y in range(6, 10) for x in (7, 8)]  # torso
+    body += [(6, 6), (5, 5), (4, 4), (3, 3), (6, 9), (5, 10), (4, 11), (3, 12)]  # arms
+    body += [(10, 6), (11, 5), (12, 5), (13, 4), (10, 9), (11, 10), (12, 10), (13, 11)]  # legs
+    for y, x in body:
+        g[y][x] = "k"
+    return tuple("".join(r) for r in g)
+
+
+# Icons are centred on a 16x16 canvas; whitespace around them is fine.
 _ART: dict[str, tuple[str, ...]] = {
-    "agents": (
-        ".kkkk......kkkk.",
-        "kaaaak....kaaaak",
-        "kaaaakkkkkkaaaak",
-        "kaaaak....kaaaak",
-        "kaaaak....kaaaak",
-        ".kkkk......kkkk.",
-        "..kk........kk..",
-        "...kk......kk...",
-        "....kk....kk....",
-        "......kkkk......",
-        ".....kyyyyk.....",
-        ".....kyyyyk.....",
-        ".....kyyyyk.....",
-        ".....kyyyyk.....",
-        "......kkkk......",
-    ),
     "book": (
         ".kkkkkk..kkkkkk.",
         "kwwwwwwkkwwwwwwk",
@@ -106,6 +139,139 @@ _ART: dict[str, tuple[str, ...]] = {
         "knnnnnnnnnnnnnnk",
         "kkkkkkkkkkkkkkkk",
     ),
+    "battery": (
+        "kkkkkkkkkkkkkk..",
+        "kwwwwwwwwwwwwk..",
+        "kgggwgggwgggwkkk",
+        "kgggwgggwgggwkkk",
+        "kgggwgggwgggwkkk",
+        "kgggwgggwgggwkkk",
+        "kwwwwwwwwwwwwk..",
+        "kkkkkkkkkkkkkk..",
+    ),
+    "satellite": (
+        ".......yy.......",
+        ".......kk.......",
+        ".......kk.......",
+        "kkkkk.kkkk.kkkkk",
+        "kaaak.kyyk.kaaak",
+        "klllkkkyykkklllk",
+        "kaaakkkyykkkaaak",
+        "klllk.kyyk.klllk",
+        "kkkkk.kkkk.kkkkk",
+        ".......kk.......",
+    ),
+    "sock": (
+        "..kkkkkkkk......",
+        "..kaaaaaak......",
+        "..kwwwwwwk......",
+        "..kaaaaaak......",
+        "..kwwwwwwk......",
+        "..kwwwwwwk......",
+        "..kwwwwwwk......",
+        "..kwwwwwwk......",
+        "..kwwwwwwkkkkk..",
+        "..kaawwwwwwaak..",
+        "..kaawwwwwwaak..",
+        "..kaawwwwwwaak..",
+        "..kkkkkkkkkkkk..",
+    ),
+    "wearable": (
+        "....kkkkkkkk....",
+        "....kaaaaaak....",
+        "....kaaaaaak....",
+        "....kaaaaaak....",
+        "...kkkkkkkkkk...",
+        "...kllllllllk...",
+        "...klrrllrrlk...",
+        "...klrrrrrrlk...",
+        "...kllrrrrllk...",
+        "...klllrrlllk...",
+        "...kkkkkkkkkk...",
+        "....kaaaaaak....",
+        "....kaaaaaak....",
+        "....kaaaaaak....",
+        "....kkkkkkkk....",
+    ),
+    "lightning": _outlined(
+        (
+            "......####",
+            ".....####.",
+            "....####..",
+            "...####...",
+            "..########",
+            "..########",
+            "....####..",
+            "...####...",
+            "..####....",
+            ".####.....",
+            "####......",
+        )
+    ),
+    "canvas": (
+        "..kkkkkkkkkkkk..",
+        "..kllllllllllk..",
+        "..kllllllllyyk..",
+        "..kllllllllyyk..",
+        "..kllllllllllk..",
+        "..kllllllllllk..",
+        "..kgggglgggggk..",
+        "..kggggggggggk..",
+        "..kggggggggggk..",
+        "..kkkkkkkkkkkk..",
+        "...nn......nn...",
+        "...nn..nn..nn...",
+        "..nn...nn...nn..",
+        "..nn...nn...nn..",
+        ".nn....nn....nn.",
+    ),
+    "bitflip": (
+        "kkkkkkk..kkkkkkk",
+        "kwaaawk..kwwrwwk",
+        "kawwwak..kwrrwwk",
+        "kawwwak..kwwrwwk",
+        "kawwwakyykwwrwwk",
+        "kawwwak..kwwrwwk",
+        "kawwwak..kwwrwwk",
+        "kwaaawk..kwrrrwk",
+        "kkkkkkk..kkkkkkk",
+    ),
+    "bank": (
+        ".......kk.......",
+        "......kwwk......",
+        ".....kwwwwk.....",
+        "....kwwwwwwk....",
+        "...kwwwwwwwwk...",
+        "..kkkkkkkkkkkk..",
+        "...aa..aa..aa...",
+        "...aa..aa..aa...",
+        "...aa..aa..aa...",
+        "...aa..aa..aa...",
+        "..kkkkkkkkkkkk..",
+        ".kkkkkkkkkkkkkk.",
+    ),
+    "ingot": (
+        "....kkkkkkkk....",
+        "...khxxhhhhhk...",
+        "..khhhhhhhhhhk..",
+        "kkkkkkkkkkkkkkkk",
+        "kyyyyyyyyyyyyyyk",
+        "kyyyyyyyyyyyyyyk",
+        "kyyyyyyyyyyyyyyk",
+        "kkkkkkkkkkkkkkkk",
+    ),
+    "cash": (
+        "kkkkkkkkkkkkkkkk",
+        "kggggggggggggggk",
+        "kgxgggxxxxgggxgk",
+        "kggggxggggxggggk",
+        "kggggxgxxgxggggk",
+        "kggggxggggxggggk",
+        "kgxgggxxxxgggxgk",
+        "kggggggggggggggk",
+        "kkkkkkkkkkkkkkkk",
+    ),
+    "climber": _climber(),
     "bulb": (
         "...kkkkkk...",
         "..kyyyyyyk..",
@@ -152,24 +318,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "..kkkkkkkkkkkk..",
         "...k.k.k.k.k....",
         "...k.k.k.k.k....",
-    ),
-    "coin": (
-        "....kkkkkkkk....",
-        "..kkyyyyyyyykk..",
-        ".kyyyyyyyyyyyyk.",
-        ".kyyxxyyyyyyyyk.",
-        "kyyxyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        ".kyyyyyyyyyyyyk.",
-        ".kyyyyyyyyyyyyk.",
-        "..kkyyyyyyyykk..",
-        "....kkkkkkkk....",
     ),
     "controller": (
         "..kkkkkkkkkkkk..",
@@ -218,34 +366,6 @@ _ART: dict[str, tuple[str, ...]] = {
         ".kggggggggk.",
         "..kkkkkkkk..",
     ),
-    "folder": (
-        "kkkkkk..........",
-        "kyyyykkkkkkkkkk.",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kyyyyyyyyyyyyyyk",
-        "kkkkkkkkkkkkkkkk",
-    ),
-    "github": (
-        "..kk........kk..",
-        ".kkkk......kkkk.",
-        ".kwwkkkkkkkkwwk.",
-        "kwwwwwwwwwwwwwwk",
-        "kwwwwwwwwwwwwwwk",
-        "kwwkkwwwwwwkkwwk",
-        "kwwkkwwwwwwkkwwk",
-        "kwwwwwwkkwwwwwwk",
-        "kwwwwwwwwwwwwwwk",
-        ".kwwwwwwwwwwwwk.",
-        "..kwwwwwwwwwwk..",
-        "...kkkwwwwkkk...",
-    ),
     "heart": (
         "..kkkk....kkkk..",
         ".krrrrrkkrrrrrk.",
@@ -259,24 +379,6 @@ _ART: dict[str, tuple[str, ...]] = {
         ".....krrrrk.....",
         "......krrk......",
         ".......kk.......",
-    ),
-    "linkedin": (
-        "kkkkkkkkkkkkkkkk",
-        "kaaaaaaaaaaaaaak",
-        "kaaaaaaaaaaaaaak",
-        "kaaaxxaaaaaaaaak",
-        "kaaaxxaaaaaaaaak",
-        "kaaaaaaaaaaaaaak",
-        "kaaxxaaxxxxxxaak",
-        "kaaxxaaxxxxxxaak",
-        "kaaxxaaxxaaxxaak",
-        "kaaxxaaxxaaxxaak",
-        "kaaxxaaxxaaxxaak",
-        "kaaxxaaxxaaxxaak",
-        "kaaxxaaxxaaxxaak",
-        "kaaaaaaaaaaaaaak",
-        "kaaaaaaaaaaaaaak",
-        "kkkkkkkkkkkkkkkk",
     ),
     "magnifier": (
         "...kkkkkkk......",
@@ -305,36 +407,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "kwwwwwwwwwwwwwwk",
         "kkkkkkkkkkkkkkkk",
     ),
-    "mountain": (
-        ".........kk.....",
-        "........kxxk....",
-        ".......kxxxxk...",
-        "......kaxaxaak..",
-        "...kkkaaaaaaaak.",
-        "..kxkaaaaaaaaaak",
-        ".kakaaaaaaaaaaak",
-        "kakaaaaaaaaaaaak",
-        "kaaaaaaaaaaaaaak",
-        "kkkkkkkkkkkkkkkk",
-    ),
-    "orcid": (
-        "....oooooooo....",
-        "..oooooooooooo..",
-        ".oooooooooooooo.",
-        ".oooooooooooooo.",
-        "oooxxoxxxxxooooo",
-        "oooxxoxxxxxxoooo",
-        "ooooooxxoooxxooo",
-        "oooxxoxxoooxxooo",
-        "oooxxoxxoooxxooo",
-        "oooxxoxxoooxxooo",
-        "oooxxoxxoooxxooo",
-        "oooxxoxxxxxxoooo",
-        ".ooxxoxxxxxoooo.",
-        ".oooooooooooooo.",
-        "..oooooooooooo..",
-        "....oooooooo....",
-    ),
     "pawn": (
         "....kkkk....",
         "..kkaaaakk..",
@@ -354,24 +426,6 @@ _ART: dict[str, tuple[str, ...]] = {
         "kkkkkkkkkkkk",
     ),
     "pulse": _pulse(),
-    "shield": (
-        "kkkkkkkkkkkkkk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        "kaaaaaallllllk",
-        ".kaaaaalllllk.",
-        "..kaaaallllk..",
-        "...kaaalllk...",
-        "....kaallk....",
-        ".....kalk.....",
-        "......kk......",
-    ),
     "snake": (
         "gggggggggggggg..",
         "gggggggggggggg..",
@@ -391,7 +445,7 @@ DEFAULT_ICON = "chip"
 LINK_ICONS: dict[str, str] = {
     "email": "mail",
     "cv": "doc",
-    "scholar": "cap",
+    "scholar": "scholar",
     "orcid": "orcid",
     "github": "github",
     "linkedin": "linkedin",
@@ -402,17 +456,39 @@ SECTION_ICONS: dict[str, str] = {
     "research": "flask",
     "education": "cap",
     "experience": "briefcase",
-    "projects": "folder",
+    "projects": "canvas",
     "skills": "chip",
 }
 
 
+_LOGO_PATH = Path(__file__).with_name("logo_pixels.json")
+
+
+def _load_logos() -> dict[str, dict]:
+    if not _LOGO_PATH.exists():
+        return {}
+    return json.loads(_LOGO_PATH.read_text())
+
+
+# Official logos converted by scripts/logos_to_pixels.py (see assets/logos/).
+LOGOS: dict[str, dict] = _load_logos()
+
+
 def icon_names() -> list[str]:
+    """Hand-drawn icons (character grids)."""
     return sorted(_ART)
 
 
+def logo_names() -> list[str]:
+    return sorted(LOGOS)
+
+
+def all_icon_names() -> list[str]:
+    return sorted({*_ART, *LOGOS})
+
+
 def grid(name: str) -> list[str]:
-    """Return the icon as exactly ``SIZE`` rows of ``SIZE`` characters."""
+    """Return a hand-drawn icon as exactly ``SIZE`` rows of ``SIZE`` characters."""
     art = _ART[name]
     width = len(art[0])
     if any(len(row) != width for row in art):
@@ -427,10 +503,7 @@ def grid(name: str) -> list[str]:
     return rows
 
 
-def svg(name: str | None, fallback: str = DEFAULT_ICON) -> str:
-    """Inline decorative SVG for ``name`` (unknown names use ``fallback``)."""
-    key = name if name in _ART else fallback
-    rows = grid(key)
+def _runs(rows: list[str]) -> dict[str, list[str]]:
     paths: dict[str, list[str]] = {}
     for y, row in enumerate(rows):
         x = 0
@@ -443,9 +516,24 @@ def svg(name: str | None, fallback: str = DEFAULT_ICON) -> str:
             while x < SIZE and row[x] == ch:
                 x += 1
             paths.setdefault(ch, []).append(f"M{start} {y}h{x - start}v1h-{x - start}z")
-    body = "".join(
-        f'<path class="ic-{PALETTE[ch]}" d="{"".join(segs)}"/>' for ch, segs in paths.items()
-    )
+    return paths
+
+
+def svg(name: str | None, fallback: str = DEFAULT_ICON) -> str:
+    """Inline decorative SVG for ``name`` (unknown names use ``fallback``)."""
+    if name in LOGOS:
+        data = LOGOS[name]
+        body = ""
+        for ch, segs in _runs(data["rows"]).items():
+            colour = data["palette"][ch]
+            attr = 'class="ic-ink"' if colour == "ink" else f'fill="{colour}"'
+            body += f'<path {attr} d="{"".join(segs)}"/>'
+    else:
+        key = name if name in _ART else fallback
+        body = "".join(
+            f'<path class="ic-{PALETTE[ch]}" d="{"".join(segs)}"/>'
+            for ch, segs in _runs(grid(key)).items()
+        )
     return (
         '<svg class="pix" viewBox="0 0 16 16" shape-rendering="crispEdges" '
         f'aria-hidden="true" focusable="false">{body}</svg>'

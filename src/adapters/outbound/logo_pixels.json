@@ -1,0 +1,170 @@
+{
+ "bath": {
+  "palette": {
+   "a": "#291f14",
+   "b": "#697c86",
+   "c": "#a3d0ec",
+   "d": "#abdbfa"
+  },
+  "rows": [
+   "aaaaaaaaaaaaaaaa",
+   "aaaaaaaaaaaaaaaa",
+   "aaaaaaaaaaaaaaaa",
+   "aaaaabbbbbbaaaaa",
+   "aaaabbbbbbbbaaaa",
+   "aaabbbbbbbbbbaaa",
+   "aaabcbbddbbcbaaa",
+   "aaabbbbbbbbbbaaa",
+   "aabbbbbbbcbbbbaa",
+   "aaaabbbbbbbbaaaa",
+   "aaabbbbabbbbbaaa",
+   "aaaabbbbbbbbaaaa",
+   "aaaaabbbbbbaaaaa",
+   "aaaaaaaaaaaaaaaa",
+   "aaaaaaaaaaaaaaaa",
+   "aaaaaaaaaaaaaaaa"
+  ]
+ },
+ "bristol": {
+  "palette": {
+   "a": "#fbf4f5",
+   "b": "#c35461"
+  },
+  "rows": [
+   ".aaaaaaaaaaaaaa.",
+   "aaaaaaaaaaaaaaaa",
+   "aabbbbbbaabaaaaa",
+   "aabbabbbabbabaaa",
+   "aabaaabbbbbbaaaa",
+   "aabababbbbbbbbaa",
+   "aabbbbbbbbbbbaaa",
+   "aabbbbbaababaaaa",
+   "aabbbabbbbbbbbaa",
+   "aabbbabbbbabbbaa",
+   "aabbbbbbbbabbbaa",
+   "aabbbbbbbbaaabaa",
+   "aabbbbbbbbbbbbaa",
+   "aabbbbbabbbbbbaa",
+   "aaaaaaaaaaaabaaa",
+   ".aaaaaaaaaaaaaa."
+  ]
+ },
+ "github": {
+  "palette": {
+   "a": "ink"
+  },
+  "rows": [
+   "......aaaa......",
+   "....aaaaaaaa....",
+   "..aaaaaaaaaaaa..",
+   "..aaaaaaaaaaaa..",
+   ".aaa........aaa.",
+   "aaaa........aaaa",
+   "aaa..........aaa",
+   "aaa..........aaa",
+   "aaa..........aaa",
+   "aaa..........aaa",
+   "aaaa........aaaa",
+   ".aaaa......aaaa.",
+   ".aa.aa....aaaaa.",
+   "..aa......aaaa..",
+   "...aaa....aaa...",
+   ".....a....a....."
+  ]
+ },
+ "linkedin": {
+  "palette": {
+   "a": "#007ebb",
+   "b": "#f9fcfd"
+  },
+  "rows": [
+   ".aaaaaaaaaaaaaa.",
+   "aaaaaaaaaaaaaaaa",
+   "aaabaaaaaaaaaaaa",
+   "aabbbaaaaaaaaaaa",
+   "aaabbaaaaaaaaaaa",
+   "aaaaaaaaaaaaaaaa",
+   "aaabbabbbbbbbaaa",
+   "aabbbabbbbbbbbaa",
+   "aabbbabbbaabbbaa",
+   "aabbbabbbaabbbaa",
+   "aabbbabbbaabbbaa",
+   "aabbbabbbaabbbaa",
+   "aabbbabbbaabbbaa",
+   "aaabbaabbaaabbaa",
+   "aaaaaaaaaaaaaaaa",
+   ".aaaaaaaaaaaaaa."
+  ]
+ },
+ "orcid": {
+  "palette": {
+   "a": "#a6ce39",
+   "b": "#a5cd38"
+  },
+  "rows": [
+   ".....aaaaaa.....",
+   "...aaaaaaaaaa...",
+   "..aabbaaabbbaa..",
+   ".baa.baaaaabbab.",
+   ".aaaababbaaabaa.",
+   "baba.bb.....abab",
+   "aaaa.aa.aaa.baaa",
+   "aaba.aa.abaa.aaa",
+   "baba.aa.abab.bab",
+   "aaaa.ba.aaaa.aab",
+   "aaba.aa.aa..aaab",
+   ".aaabba....aaba.",
+   ".babaaaaaaaabab.",
+   "..aabbbaabbbaa..",
+   "...aaaaaaaaaa...",
+   ".....aaaaaa....."
+  ]
+ },
+ "scholar": {
+  "palette": {
+   "a": "#4285f4",
+   "b": "#4184f4"
+  },
+  "rows": [
+   ".......aa.......",
+   "......aaaa......",
+   ".....aabbaa.....",
+   "....aabaabaa....",
+   "..aaabaaaabaaa..",
+   ".aaabaaaaaabaaa.",
+   "babbaaaaaaaabaaa",
+   ".aaaaaaaaaaaaaa.",
+   "...abaaaaaaba...",
+   "....aaaaaaaa....",
+   "...aaaaaaaaaa...",
+   "...aaaaaaaaaa...",
+   "...aaaaaaaaaa...",
+   "....aabaabaa....",
+   ".....aaaaaa.....",
+   "......aaaa......"
+  ]
+ },
+ "steam": {
+  "palette": {
+   "a": "ink"
+  },
+  "rows": [
+   ".....aaaaaa.....",
+   "...aaaaaaaaaa...",
+   "..aaaaaaaaaaaa..",
+   ".aaaaaaaa...aaa.",
+   ".aaaaaaa...a.aa.",
+   "aaaaaaaa......aa",
+   "aaaaaaa.......aa",
+   "aaaaaaa......aaa",
+   "...aaa......aaaa",
+   "..........aaaaaa",
+   "........aaaaaaaa",
+   ".aa.....aaaaaaa.",
+   ".aaa...aaaaaaaa.",
+   "..aaaaaaaaaaaa..",
+   "...aaaaaaaaaa...",
+   ".....aaaaaa....."
+  ]
+ }
+}

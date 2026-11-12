@@ -1,0 +1,32 @@
+{
+  "github": {
+    "src": "github.png",
+    "colors": 2,
+    "ink": true
+  },
+  "linkedin": {
+    "src": "linkedin.png",
+    "colors": 2
+  },
+  "orcid": {
+    "src": "orcid.png",
+    "colors": 2
+  },
+  "scholar": {
+    "src": "scholar.png",
+    "colors": 2
+  },
+  "steam": {
+    "src": "steam.png",
+    "colors": 2,
+    "ink": true
+  },
+  "bristol": {
+    "src": "bristol.png",
+    "colors": 2
+  },
+  "bath": {
+    "src": "bath.png",
+    "colors": 4
+  }
+}

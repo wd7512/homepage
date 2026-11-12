@@ -4,6 +4,7 @@ company: Ocean Partners
 location: Maidenhead, UK
 period: Jul 2021 – Jul 2022
 order: 6
+icon: ingot
 ---
 
 - Mitigated £250m of physical commodity transactions via the London Metal Exchange.

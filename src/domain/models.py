@@ -67,6 +67,8 @@ class Experience(OrderedMixin):
     period: NonEmpty
     bullets: Annotated[list[NonEmpty], Field(min_length=1)]
     slug: NonEmpty
+    # Optional name of a decorative pixel icon or logo (website only).
+    icon: NonEmpty | None = None
 
 
 class Education(OrderedMixin):
@@ -75,6 +77,8 @@ class Education(OrderedMixin):
     details: str | None = None
     period: NonEmpty
     bullets: Annotated[list[NonEmpty], Field(min_length=1)]
+    # Optional name of a decorative pixel icon or logo (website only).
+    icon: NonEmpty | None = None
 
 
 class LinkItem(StrictBase):

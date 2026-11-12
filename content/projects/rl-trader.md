@@ -4,7 +4,7 @@ tags: [RL, Finance]
 year: 2023
 order: 4
 cv_order: 3
-icon: chart
+icon: cash
 kind: personal
 visibility: [website, cv]
 links: []

@@ -49,6 +49,11 @@ def _tag_line(tags: list[str]) -> str:
     return f'<p class="meta">{esc(", ".join(tags))}</p>' if tags else ""
 
 
+def _icon(name: str | None) -> str:
+    """Optional decorative icon (empty when the entry has none)."""
+    return pixel_icons.svg(name) if name else ""
+
+
 def _heading(section: str, title: str) -> str:
     icon = pixel_icons.svg(pixel_icons.SECTION_ICONS[section])
     return f"<h2>{icon}<span>{esc(title)}</span></h2>"
@@ -77,6 +82,7 @@ _CSS = """
       --ic-green: #5a9a5a;
       --ic-red: #c8554f;
       --ic-brown: #b38e63;
+      --ic-honey: #f3dc8b;
       --ic-orcid: #a6ce39;
       --ic-white: #ffffff;
     }
@@ -96,6 +102,7 @@ _CSS = """
         --ic-green: #6fb36f;
         --ic-red: #d9665f;
         --ic-brown: #a98159;
+        --ic-honey: #e9cf7a;
       }
     }
 
@@ -126,6 +133,7 @@ _CSS = """
     .ic-green { fill: var(--ic-green); }
     .ic-red { fill: var(--ic-red); }
     .ic-brown { fill: var(--ic-brown); }
+    .ic-honey { fill: var(--ic-honey); }
     .ic-orcid { fill: var(--ic-orcid); }
     .ic-white { fill: var(--ic-white); }
 
@@ -274,7 +282,7 @@ def render_site(bundle: DomainBundle) -> str:
         items = [
             '  <article class="item">\n'
             '    <div class="item-head">\n'
-            f"      <h3>{esc(e.institution)}</h3>\n"
+            f"      <h3>{_icon(e.icon)}<span>{esc(e.institution)}</span></h3>\n"
             f'      <span class="period">{esc(e.period)}</span>\n'
             "    </div>\n"
             f'    <p class="sub">{esc(e.degree)}</p>\n'
@@ -289,7 +297,7 @@ def render_site(bundle: DomainBundle) -> str:
         items = [
             '  <article class="item">\n'
             '    <div class="item-head">\n'
-            f"      <h3>{esc(e.role)}</h3>\n"
+            f"      <h3>{_icon(e.icon)}<span>{esc(e.role)}</span></h3>\n"
             f'      <span class="period">{esc(e.period)}</span>\n'
             "    </div>\n"
             f'    <p class="sub">{esc(e.company)} · {esc(e.location)}</p>\n'

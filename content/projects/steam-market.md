@@ -3,7 +3,7 @@ title: Steam Market Trading
 tags: [Web Scraping, Automation]
 year: 2020-2023
 order: 6
-icon: coin
+icon: steam
 kind: personal
 visibility: [website]
 links: []
