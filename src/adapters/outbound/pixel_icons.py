@@ -34,6 +34,23 @@ PALETTE: dict[str, str] = {
     "e": "terminalgreen",
 }
 
+# Fixed colours used by the official logos. They extend the hand-drawn
+# vocabulary so the latent codec can represent every icon with one alphabet.
+EXTRA_COLOURS: dict[str, str] = {
+    "L": "#0077b5",  # LinkedIn blue
+    "O": "#a6ce39",  # ORCID green
+    "B": "#081282",  # Bath navy
+    "T": "#c4d8ef",  # Bath light blue
+    "R": "#fbf4f5",  # Bristol near-white
+    "S": "#c35461",  # Bristol maroon
+}
+
+_LOGO_SYMBOLS: dict[str, str] = {
+    "ink": "k",
+    "#ffffff": "x",
+    **{colour: symbol for symbol, colour in EXTRA_COLOURS.items()},
+}
+
 
 def _pulse() -> tuple[str, ...]:
     """ECG trace (2px) inside a monitor frame, 16 wide x 9 tall."""
@@ -561,6 +578,30 @@ def grid(name: str) -> list[str]:
     return rows
 
 
+def symbol_grid(name: str) -> list[str]:
+    """Any icon (hand-drawn or logo) on the codec's shared symbol alphabet.
+
+    Hand-drawn icons already use :data:`PALETTE`; logos are translated from
+    their fixed brand colours into the matching symbol (see
+    :data:`EXTRA_COLOURS`).  The result is what ``scripts/train_icons.py``
+    learns and what the client-side decoder reproduces at its anchors.
+    """
+    if name in LOGOS:
+        palette = LOGOS[name]["palette"]
+        return [
+            "".join("." if ch == "." else _LOGO_SYMBOLS[palette[ch]] for ch in row)
+            for row in LOGOS[name]["rows"]
+        ]
+    return grid(name)
+
+
+def paint() -> dict[str, dict[str, str]]:
+    """Map each non-transparent symbol to how it is painted in the SVG."""
+    out = {symbol: {"class": f"ic-{suffix}"} for symbol, suffix in PALETTE.items()}
+    out.update({symbol: {"fill": colour} for symbol, colour in EXTRA_COLOURS.items()})
+    return out
+
+
 def _runs(rows: list[str]) -> dict[str, list[str]]:
     paths: dict[str, list[str]] = {}
     for y, row in enumerate(rows):
@@ -580,6 +621,7 @@ def _runs(rows: list[str]) -> dict[str, list[str]]:
 def svg(name: str | None, fallback: str = DEFAULT_ICON) -> str:
     """Inline decorative SVG for ``name`` (unknown names use ``fallback``)."""
     if name in LOGOS:
+        key = name
         data = LOGOS[name]
         body = ""
         for ch, segs in _runs(data["rows"]).items():
@@ -593,6 +635,7 @@ def svg(name: str | None, fallback: str = DEFAULT_ICON) -> str:
             for ch, segs in _runs(grid(key)).items()
         )
     return (
-        '<svg class="pix" viewBox="0 0 16 16" shape-rendering="crispEdges" '
+        f'<svg class="pix" data-pix="{key}" viewBox="0 0 16 16" '
+        'shape-rendering="crispEdges" '
         f'aria-hidden="true" focusable="false">{body}</svg>'
     )

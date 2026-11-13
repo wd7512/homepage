@@ -13,6 +13,12 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.11",
 ]
+# Only needed to regenerate src/adapters/outbound/icon_codec.json:
+#   uv run --group train python scripts/train_icons.py
+train = [
+    "numpy>=2.0",
+    "torch>=2.0",
+]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

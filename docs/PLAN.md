@@ -21,11 +21,15 @@ src/
   adapters/inbound/markdown_loader.py
   adapters/outbound/html.py
   adapters/outbound/latex.py
+  adapters/outbound/pixel_icons.py # 16x16 icon grids + SVG renderer
+  adapters/outbound/icon_codec.json # trained 1-D latent decoder (generated)
+  adapters/outbound/icon_codec.js   # inlined client-side decoder + slider
 scripts/
   build_site.py
   build_cv.py
   validate.py
   check_contacts.py
+  train_icons.py                   # regenerates icon_codec.json
 tests/
 ```
 
@@ -57,6 +61,34 @@ tests/
   RL Trader.
 - **Publications:** LNAI 2026, ICAART 2025, SmartSocks 2025.
 - **Activities:** CV-only.
+
+## Hidden icon latent slider
+
+The footer contains a 1px hairline that expands into a range input on hover
+or keyboard focus. It slides a one-dimensional bottleneck shared by every
+pixel-art icon.
+
+- **Data.** `adapters.outbound.pixel_icons.symbol_grid(name)` maps each icon
+  (hand-drawn and official logos) onto one 16x16 symbol alphabet:
+  `PALETTE` for the drawings plus `EXTRA_COLOURS` for logo brand colours.
+- **Model.** Each icon owns a scalar latent on a unit circle, spaced by
+  visual similarity. A tiny implicit decoder (latent Fourier features plus
+  per-pixel coordinate features, 32-32-23 MLP) maps `(z, x, y)` to a symbol.
+  ~3.2k parameters; reproduces all 32 icons exactly at their anchors.
+- **Slider.** Adds a phase to every icon's latent (`z_i + bias mod 1`) and
+  redraws every SVG carrying `data-pix`. At phase 0 the authored art is
+  untouched; the page ships the decoder, not precomputed frames.
+- **Artifact.** `src/adapters/outbound/icon_codec.json` (int16 weights,
+  ~8 KB gzipped) plus `icon_codec.js` (inlined by the HTML adapter).
+  Regenerate after adding or editing an icon:
+
+  ```bash
+  uv run --group train python scripts/train_icons.py
+  ```
+
+  The script refuses to write an artifact unless every anchor decodes
+  exactly; `tests/test_icon_codec.py` replays the shipped JS under Node to
+  keep it honest.
 
 ## Build and verify
 

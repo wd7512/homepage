@@ -116,3 +116,15 @@ def test_render_site_profile_links_statement_and_highlighted_author() -> None:
     assert "<strong>William Dennis</strong>" in page
     assert page.count('class="ext"') == 3
     assert page.count('<svg class="pix"') >= 3  # section + item icons
+
+
+def test_render_site_embeds_the_latent_slider_and_codec() -> None:
+    bundle = DomainBundle(personal=personal(), projects=[], activities=[])
+    page = render_site(bundle)
+    assert 'id="pix-codec"' in page
+    assert 'id="pix-z"' in page
+    assert 'aria-label="Icon latent phase"' in page
+    assert "data-pix=" in page
+    # Every rendered icon is addressable by the decoder.
+    svgs = re.findall(r'<svg class="pix"[^>]*>', page)
+    assert svgs and all("data-pix=" in svg for svg in svgs)

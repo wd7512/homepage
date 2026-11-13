@@ -1,19 +1,34 @@
 """Outbound adapter: domain bundle -> single-page academic site.
 
 Renders the ``website`` channel of a :class:`DomainBundle` to a
-self-contained ``index.html`` (inline CSS, no JS, no external assets beyond
-Google Fonts). Design: minimal, text-first, single column, research first,
-light/dark via ``prefers-color-scheme``, with tiny decorative pixel-art icons
-(inline SVG, see :mod:`adapters.outbound.pixel_icons`). All text is
-HTML-escaped; sections render only when they have website-visible entries.
+self-contained ``index.html`` (inline CSS, inline dependency-free JS, no
+external assets beyond Google Fonts). Design: minimal, text-first, single
+column, research first, light/dark via ``prefers-color-scheme``, with tiny
+decorative pixel-art icons (inline SVG, see
+:mod:`adapters.outbound.pixel_icons`). A hidden footer slider slides the
+icons' one-dimensional latent code. All text is HTML-escaped; sections render
+only when they have website-visible entries.
 """
 
 from __future__ import annotations
 
 import html as _html
+from pathlib import Path
 
 from adapters.outbound import pixel_icons
 from domain.models import DomainBundle, LinkItem
+
+_HERE = Path(__file__).resolve().parent
+_CODEC_PATH = _HERE / "icon_codec.json"
+_JS_PATH = _HERE / "icon_codec.js"
+
+
+def _asset(path: Path) -> str:
+    return path.read_text() if path.exists() else ""
+
+
+_CODEC = _asset(_CODEC_PATH)
+_CODEC_JS = _asset(_JS_PATH)
 
 
 def esc(text: str) -> str:
@@ -208,6 +223,52 @@ _CSS = """
 
     footer { margin-top: 56px; padding-top: 16px; padding-bottom: 40px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.85rem; }
 
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    /* The slider is a 1px hairline until you hover or focus it. */
+    .latent { position: relative; margin-top: 14px; height: 12px; }
+    .latent input[type="range"] {
+      -webkit-appearance: none; appearance: none; position: absolute; inset: 0;
+      width: 100%; height: 12px; margin: 0; padding: 0;
+      background: transparent; cursor: ew-resize;
+    }
+    .latent input[type="range"]::-webkit-slider-runnable-track {
+      height: 1px; background: var(--rule);
+    }
+    .latent input[type="range"]::-moz-range-track {
+      height: 1px; background: var(--rule);
+    }
+    .latent input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 6px; height: 6px; margin-top: -2.5px;
+      border-radius: 50%; background: var(--muted); opacity: 0;
+      transition: opacity 0.12s;
+    }
+    .latent input[type="range"]::-moz-range-thumb {
+      width: 6px; height: 6px; border: 0; border-radius: 50%;
+      background: var(--muted); opacity: 0; transition: opacity 0.12s;
+    }
+    .latent:hover input[type="range"]::-webkit-slider-thumb,
+    .latent input[type="range"]:focus-visible::-webkit-slider-thumb { opacity: 0.7; }
+    .latent:hover input[type="range"]::-moz-range-thumb,
+    .latent input[type="range"]:focus-visible::-moz-range-thumb { opacity: 0.7; }
+    .latent:focus-within input[type="range"]::-webkit-slider-runnable-track,
+    .latent:hover input[type="range"]::-webkit-slider-runnable-track { background: var(--muted); }
+    .latent:focus-within input[type="range"]::-moz-range-track,
+    .latent:hover input[type="range"]::-moz-range-track { background: var(--muted); }
+    .latent-out {
+      position: absolute; right: 0; top: -17px; font-size: 0.7rem;
+      color: var(--muted); font-variant-numeric: tabular-nums;
+      opacity: 0; transition: opacity 0.12s; pointer-events: none;
+    }
+    .latent:hover .latent-out, .latent:focus-within .latent-out { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      .latent input[type="range"]::-webkit-slider-thumb,
+      .latent input[type="range"]::-moz-range-thumb,
+      .latent-out { transition: none; }
+    }
+
     @media (max-width: 600px) {
       body { font-size: 16px; }
       header { padding-top: 40px; }
@@ -346,6 +407,26 @@ def render_site(bundle: DomainBundle) -> str:
             "skills", "Technical Skills", f'  <dl class="skills">\n{rows}\n  </dl>'
         )
 
+    if _CODEC and _CODEC_JS:
+        latent = (
+            '  <div class="latent">\n'
+            '    <label class="sr-only" for="pix-z">Icon latent phase</label>\n'
+            '    <input id="pix-z" type="range" min="0" max="1000" step="1" value="0" '
+            'aria-label="Icon latent phase" aria-valuetext="latent 0.00">\n'
+            '    <span id="pix-z-out" class="latent-out" aria-hidden="true">latent 0.00</span>\n'
+            "  </div>"
+        )
+        scripts = (
+            '<script type="application/json" id="pix-codec">'
+            + _CODEC.replace("</", "<\\/")
+            + "</script>\n<script>"
+            + _CODEC_JS
+            + "</script>"
+        )
+    else:
+        latent = ""
+        scripts = ""
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -373,8 +454,10 @@ def render_site(bundle: DomainBundle) -> str:
 
 <footer>
   <p>© {name} · <a href="https://github.com/wd7512/homepage/blob/main/content/">Source content</a></p>
+{latent}
 </footer>
 
+{scripts}
 </body>
 </html>
 """
