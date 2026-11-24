@@ -3,7 +3,7 @@ role: Honorary Research Associate in Machine Learning
 company: University of Bristol
 location: Bristol, UK
 period: Oct 2024 – Present
-order: 2
+order: 3
 icon: neural_network
 ---
 

@@ -70,6 +70,30 @@
    "................"
   ]
  },
+ "hartley": {
+  "palette": {
+   "b": "#006af6",
+   "w": "#ffffff"
+  },
+  "rows": [
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbwbbbbbbwbbb",
+   "bbbbbwbbbbbbwbbb",
+   "bbbbwwwbbbbwwwbb",
+   "bwwwwwwwwwwwwwwb",
+   "bbwwwbbbbwwwbbbb",
+   "bbbwbbbbbbwbbbbb",
+   "bbbwbbbbbbwbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb",
+   "bbbbbbbbbbbbbbbb"
+  ]
+ },
  "linkedin": {
   "palette": {
    "b": "#0077b5",

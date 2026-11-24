@@ -43,6 +43,7 @@ EXTRA_COLOURS: dict[str, str] = {
     "T": "#c4d8ef",  # Bath light blue
     "R": "#fbf4f5",  # Bristol near-white
     "S": "#c35461",  # Bristol maroon
+    "H": "#006af6",  # Hartley electric blue
 }
 
 _LOGO_SYMBOLS: dict[str, str] = {
