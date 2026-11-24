@@ -3,7 +3,7 @@ role: Signal Processing Engineer
 company: Milbotix
 location: Bristol Robotics Lab, UK
 period: Feb 2024 – Oct 2024
-order: 5
+order: 4
 icon: pulse
 ---
 
