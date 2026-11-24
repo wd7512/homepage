@@ -3,7 +3,7 @@ role: Data Scientist
 company: JP Morgan
 location: Bristol, UK
 period: Feb 2024 – Jul 2024
-order: 5
+order: 6
 icon: bank
 ---
 

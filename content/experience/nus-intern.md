@@ -3,7 +3,7 @@ role: Research Intern
 company: University of Bristol x National University of Singapore
 location: Bristol, UK
 period: Jun 2026 – Jul 2026
-order: 1
+order: 2
 icon: wearable
 ---
 

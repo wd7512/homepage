@@ -3,7 +3,7 @@ role: Intern Hedging Analyst (Risk Team)
 company: Ocean Partners
 location: Maidenhead, UK
 period: Jul 2021 – Jul 2022
-order: 6
+order: 7
 icon: ingot
 ---
 
