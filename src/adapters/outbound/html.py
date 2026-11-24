@@ -138,7 +138,7 @@ _CSS = """
     }
     header, main, footer { max-width: 720px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
     @media (min-width: 1024px) and (orientation: landscape) {
-      header, main, footer { max-width: 820px; }
+      header, main, footer { max-width: 870px; }
     }
 
     a { color: var(--link); text-decoration: none; }
