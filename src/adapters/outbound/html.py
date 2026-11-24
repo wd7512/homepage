@@ -83,7 +83,7 @@ _CSS = """
     html { -webkit-text-size-adjust: 100%; }
 
     :root {
-      --bg: #f8f3e7;
+      --bg: #faf5eb;
       --text: #1b1b1b;
       --muted: #5f6368;
       --rule: #e8dfcd;
