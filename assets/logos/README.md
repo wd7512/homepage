@@ -41,3 +41,4 @@ both the source and the generated JSON.
 | linkedin | Hand-drawn 16x16 version of the LinkedIn "in" mark (reference: Wikimedia Commons `File:LinkedIn_icon.svg`) | Brand blue `#0077b5` |
 | bristol | https://www.bristol.ac.uk (favicon-32x32.png) | University of Bristol official site icon; the 32px favicon downsamples better than the 180px touch icon |
 | bath | https://antisemitism.org/wp-content/uploads/2025/01/Bath_Crest.png | University of Bath Gorgon crest; simplified at 16x16 as a solid `#081282` blue medallion with a pale face and curls inside; source retained as `bath.png` |
+| hartley | [Hartley Ultrafast](https://hartleyultrafast.com) | Hand-drawn 16x16 trace of the official white mark on an electric-blue tile |

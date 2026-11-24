@@ -78,7 +78,31 @@
   "colors": 1,
   "fill_holes": "#ffffff"
  },
- "steam": {
+  "hartley": {
+   "palette": {
+    "b": "#006af6",
+    "w": "#ffffff"
+   },
+   "rows": [
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbwbbbbbbwbbb",
+    "bbbbbwbbbbbbwbbb",
+    "bbbbwwwbbbbwwwbb",
+    "bwwwwwwwwwwwwwwb",
+    "bbwwwbbbbwwwbbbb",
+    "bbbwbbbbbbwbbbbb",
+    "bbbwbbbbbbwbbbbb",
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbbbbbbbbbbbb",
+    "bbbbbbbbbbbbbbbb"
+   ]
+  },
+  "steam": {
   "src": "steam.png",
   "colors": 1,
   "ink": true
