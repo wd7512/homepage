@@ -32,6 +32,7 @@ PALETTE: dict[str, str] = {
     "t": "walnut",
     "v": "terminalbg",
     "e": "terminalgreen",
+    "d": "chalkboard",
 }
 
 # Fixed colours used by the official logos. They extend the hand-drawn
@@ -397,6 +398,25 @@ _ART: dict[str, tuple[str, ...]] = {
         "kwwwwwwwwwwk",
         "kkkkkkkkkkkk",
     ),
+    # A wavy chalk graph and a chalk stub on the ledge.
+    "chalkboard": (
+        ".tttttttttttttt.",
+        "tddddddddddddddt",
+        "tgdddddddddddddt",
+        "tgddxxdddddddddt",
+        "tgdxddxddddddddt",
+        "tgdxddxddddddxdt",
+        "tgxddddxddddxddt",
+        "tgdddddxddddxddt",
+        "tgddddddxddxdddt",
+        "tgddddddxddxdddt",
+        "tgdddddddxxddddt",
+        "tgggggggggggggdt",
+        "tddddddddddddddt",
+        "tdddddddddpxxddt",
+        ".tttttttttttttt.",
+        ".........nnnnn..",
+    ),
     "magnifier": (
         "...kkkk.........",
         ".kkxlllkk.......",
@@ -529,7 +549,7 @@ LINK_ICONS: dict[str, str] = {
 }
 SECTION_ICONS: dict[str, str] = {
     "publications": "book",
-    "research": "magnifier",
+    "research": "chalkboard",
     "education": "certificate",
     "experience": "briefcase",
     "projects": "canvas",

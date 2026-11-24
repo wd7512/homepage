@@ -83,10 +83,10 @@ _CSS = """
     html { -webkit-text-size-adjust: 100%; }
 
     :root {
-      --bg: #ffffff;
+      --bg: #faf5eb;
       --text: #1b1b1b;
       --muted: #5f6368;
-      --rule: #e4e4e4;
+      --rule: #e8dfcd;
       --link: #1f4e8c;
       --link-hover: #0f2d57;
       --ic-ink: #2b2b2b;
@@ -105,6 +105,7 @@ _CSS = """
       --ic-walnut: #845d42;
       --ic-terminalbg: #101b13;
       --ic-terminalgreen: #39ff78;
+      --ic-chalkboard: #285848;
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -151,6 +152,7 @@ _CSS = """
     .ic-sky { fill: var(--ic-sky); }
     .ic-gold { fill: var(--ic-gold); }
     .ic-green { fill: var(--ic-green); }
+    .ic-chalkboard { fill: var(--ic-chalkboard); }
     .ic-red { fill: var(--ic-red); }
     .ic-brown { fill: var(--ic-brown); }
     .ic-honey { fill: var(--ic-honey); }
